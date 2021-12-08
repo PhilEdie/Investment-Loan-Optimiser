@@ -9,6 +9,9 @@ public class Loan extends Asset {
 
 	public Loan(double interestRate, double balance, double minimumPayment) {
 		super(interestRate, balance);
+		if(balance > 0) {
+			throw new IllegalArgumentException("Error, loan balance should be negative.");
+		}
 		this.minimumPayment = minimumPayment;
 	}
 
@@ -27,6 +30,9 @@ public class Loan extends Asset {
 	@Override
 	public Asset afterPaymentAndInterest(double payment) {
 		double newBalance = (this.balance + payment) * this.interestRate;
+		if(newBalance > 0) {
+			throw new IllegalArgumentException("Error. Loan balance after payment should not be positive.");
+		}
 		return new Loan(this.interestRate, newBalance, this.minimumPayment);
 	}
 	

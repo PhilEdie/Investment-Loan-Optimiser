@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 public class Program {
 
@@ -12,23 +13,33 @@ public class Program {
 		
 		assets.add(new Investment(1.08, 5000));
 		assets.add(new Investment(1.04, 20000));
+		assets.add(new Loan(1.16, -1000, 100));
 		
 		double income = 10000;
-		int totalMonths = 2;
+		int totalMonths = 12;
 		
 		Node root = new Node(assets);
 		
 		constructTree(root, income, 1, totalMonths);
 		
 		Node highestNetWorth = findHighestNetWorthNode(root.getAllLeafNodes());
+		System.out.println("Highest Net Worth: ");
 		System.out.println(highestNetWorth);
+		
+		Stack<Node> investmentPath = findInvestmentPath(highestNetWorth);
+		int month = 0;
+		while(!investmentPath.isEmpty()) {
+			System.out.println("Month:" + ++month);
+			System.out.println(investmentPath.pop());
+		}
+		
 	}
 	
 	public Node constructTree(Node currentNode, double income, int currentMonth, int totalMonths) {
 		
 		//We shouldn't add more children since we are already finished. 
 		if(currentMonth >= totalMonths) {
-			System.out.println("Completed." + currentNode.toString());
+			//System.out.println("Completed." + currentNode.toString());
 			return currentNode;
 		}
 		
@@ -103,12 +114,26 @@ public class Program {
 		return currentBest;
 	}
 	
+	public Stack<Node> findInvestmentPath(Node end){
+		
+		Stack<Node> path = new Stack<Node>();
+		
+		Node current = end;
+		
+		if(end.getParent() == null) {
+			throw new IllegalArgumentException("Error. end node has no parent.");
+		}
+		
+		path.push(current);
+		while(current.getParent() != null) {
+			current = current.getParent();
+			path.push(current);	
+		}	
+		
+		return path;
+	}
 	
 	
-	
-	
-	
-
 	public static void main(String[] args) {
 		new Program();
 	}
