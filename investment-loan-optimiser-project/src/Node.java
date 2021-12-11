@@ -6,13 +6,11 @@ import java.util.Set;
 public class Node {
 	private Node parent;
 	private List<Node> children = new ArrayList<Node>();
-	private List<Asset> assets;
+	private List<Account> accounts;
 	
-	public Node(List<Asset> assets) {
-		this.assets = assets;
-	}
-	
-	
+	public Node(List<Account> accounts) {
+		this.accounts = accounts;
+	}	
 
 	public Node getParent() {
 		return parent;
@@ -22,8 +20,8 @@ public class Node {
 		return children;
 	}
 
-	public List<Asset> getAssets() {
-		return assets;
+	public List<Account> getAccounts() {
+		return accounts;
 	}
 
 	public void setChildren(List<Node> children) {
@@ -39,8 +37,8 @@ public class Node {
 		this.parent = parent;
 	}
 
-	public void setAssets(List<Asset> assets) {
-		this.assets = assets;
+	public void setAssets(List<Account> accounts) {
+		this.accounts = accounts;
 	}
 	
 	public Set<Node> getAllLeafNodes() {
@@ -57,6 +55,6 @@ public class Node {
 	
 	@Override
 	public String toString() {
-		return "Node [assets=" + assets + "]";
+		return "Node [accounts=" + accounts + "]";
 	}
 }

@@ -1,39 +1,63 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
-
 import java.util.*;
 
-public class Loan extends Asset {
+public class Loan extends Account {
 
-	public final double minimumPayment;
+	private double minimumPayment;
+	private boolean paidOff = false;
 
-	public Loan(double interestRate, double balance, double minimumPayment) {
-		super(interestRate, balance);
-		if(balance > 0) {
-			throw new IllegalArgumentException("Error, loan balance should be negative.");
+	public Loan(String accountName, double interestRate, double balance, double minimumPayment) {
+		super(accountName, interestRate, balance);
+		if (balance > 0) {
+			throw new IllegalArgumentException("Error, a balance on a Loan object should be negative.");
 		}
 		this.minimumPayment = minimumPayment;
 	}
+	
+	public Loan(Loan toCopy) {
+		super(toCopy.getAccountName(), toCopy.getInterestRate(), toCopy.getBalance());
+		this.minimumPayment = toCopy.getMinimumPayment();
+	}
+
+	/**
+	 * Adds the payment to the account balance. 
+	 * If balance + payment is greater than zero, return the extra cash
+	 * as "change". 
+	 * 
+	 * @return	Any leftover money which would make the overall balance greater
+	 * 			than zero. 
+	 */
+	@Override
+	public double makePayment(double payment) {
+		//We shouldn't be making payments when the loan is already paid off. 
+		assert isPaidOff() == false;
+		
+		double originalBalance = getBalance();
+		if (getBalance() + payment > 0) {
+			setBalance(0);
+			this.paidOff = true;
+			return originalBalance + payment;
+		} else {
+			setBalance(getBalance() + payment);
+			return 0.0;
+		}
+	}
+
+	public double makeMinimumPayment() {
+		return makePayment(this.minimumPayment);
+	}
 
 	public double getMinimumPayment() {
-		return minimumPayment;
+		return this.minimumPayment;
 	}
 	
+	public boolean isPaidOff() {
+		return this.paidOff;
+	}
 
 	@Override
 	public String toString() {
-		return "Loan [interestRate=" + this.interestRate
-				+ ", balance=$" + String.format("%.2f", this.balance) +", minimumPayment=$" 
-				+ String.format("%.2f", minimumPayment) + "]";
+		return getAccountName() + "[interestRate=" + getInterestRate() + ", balance=$" + String.format("%.2f", getBalance())
+				+ ", minimumPayment=$" + String.format("%.2f", getMinimumPayment()) + "]";
 	}
 
-	@Override
-	public Asset afterPaymentAndInterest(double payment) {
-		double newBalance = (this.balance + payment) * this.interestRate;
-		if(newBalance > 0) {
-			throw new IllegalArgumentException("Error. Loan balance after payment should not be positive.");
-		}
-		return new Loan(this.interestRate, newBalance, this.minimumPayment);
-	}
-	
 }

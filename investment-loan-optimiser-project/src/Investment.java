@@ -1,21 +1,25 @@
 import java.util.*;
 
-public class Investment extends Asset {
+public class Investment extends Account {
 
 
-	public Investment(double interestRate, double balance) {
-		super(interestRate, balance);
+	public Investment(String accountName, double interestRate, double balance) {
+		super(accountName, interestRate, balance);
+	}
+	
+	public Investment(Investment toCopy) {
+		super(toCopy.getAccountName(), toCopy.getInterestRate(), toCopy.getBalance());
 	}
 
 	@Override
 	public String toString() {
-		return "Investment [interestRate=" + this.interestRate + ", balance=$" + String.format("%.2f", balance) + "]";
+		return getAccountName() + "[interestRate=" + getInterestRate() + ", balance=$" + String.format("%.2f", getBalance()) + "]";
 	}
-
+	
 	@Override
-	public Asset afterPaymentAndInterest(double payment) {
-		double newBalance = (this.balance + payment) * this.interestRate;
-		return new Investment(this.interestRate, newBalance);
+	public double makePayment(double payment) {
+		setBalance(getBalance() + payment);
+		return 0.0;
 	}
 	
 }
