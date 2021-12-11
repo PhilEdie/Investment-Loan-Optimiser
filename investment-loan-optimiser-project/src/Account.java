@@ -40,9 +40,6 @@ public abstract class Account implements Comparable<Account>{
 		this.balance = newBalance;
 	}
 	
-	public void setInterestForPeriod(double interestForPeriod) {
-		this.interestForPeriod = interestForPeriod;
-	}
 
 	public void setPaymentForPeriod(double paymentForPeriod) {
 		this.paymentForPeriod = paymentForPeriod;
@@ -59,28 +56,31 @@ public abstract class Account implements Comparable<Account>{
 	
 	public int compareTo(Account other) {
 		
-		//Handling same classes, different interest rates.
-		if(this.getClass().equals(other.getClass())) {
-			if(this.getInterestRate() > other.getInterestRate()) {
-				return -1;
-			}
-				return 1;
-		}
-				
-		//Handling different classes, same interest rate.
-		if(this.getInterestRate() == other.getInterestRate()) {
-			if(this instanceof Investment) {
-				return 1;
-			}
+		//First prioritise higher interest rate accounts.
+		if(this.getInterestRate() > other.getInterestRate()) {
 			return -1;
+		} else if (this.getInterestRate() < other.getInterestRate()) {
+			return 1;
+		} else {
+			
+			//The interest rates are equal. Prioritise loans over investments. 
+			if(this instanceof Loan && other instanceof Investment) {
+				return -1;
+			} else if(this instanceof Investment && other instanceof Loan) {
+				return 1;
+			}
 		}
 		
+		
+	
 		//Same class, same interest rate. Return in alphabetical order.
 		if(this.getAccountName().compareTo(other.getAccountName()) < 0) {
 			return -1;
 		} else if(this.getAccountName().compareTo(other.getAccountName()) > 0) {
 			return 1;
 		}
+		
+		//Both accounts are the same. 
 		return 0;
 	}
 	

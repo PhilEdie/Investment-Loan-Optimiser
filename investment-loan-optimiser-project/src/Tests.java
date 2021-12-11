@@ -23,6 +23,42 @@ class Tests {
 		assert(leftoverIncome == 100.0);
 	}
 	
+	@Test 
+	void sortingAccounts1() {
+		List<Account> toSort = new ArrayList<Account>();
+		toSort.add(new Loan("Loan 1", 1.25, -300, 50));
+		toSort.add(new Loan("Loan 2", 1.1, -1500, 100));
+		toSort.add(new Investment("Investment 1", 1.08, 5000));
+		toSort.add(new Investment("Investment 2", 1.04, 20000));
+		
+		List<Account> expected = new ArrayList<Account>(toSort);
+		Collections.sort(toSort);
+		assertEquals(expected, toSort);
+	}
+	
+	@Test 
+	void sortingAccounts2() {
+		List<Account> toSort = new ArrayList<Account>();
+		toSort.add(new Loan("Loan 1", 1.25, -300, 50));
+		toSort.add(new Investment("Investment 1", 1.25, 5000));
+		
+		List<Account> expected = new ArrayList<Account>(toSort);
+		Collections.sort(toSort);
+		assertEquals(expected, toSort);
+	}
+	
+	@Test 
+	void sortingAccounts3() {
+		List<Account> toSort = new ArrayList<Account>();
+		toSort.add(new Loan("Loan 1", 1.26, -300, 50));
+		toSort.add(new Loan("Loan 2", 1.25, -300, 50));
+		toSort.add(new Investment("Investment 1", 1.25, 5000));
+		
+		List<Account> expected = new ArrayList<Account>(toSort);
+		Collections.sort(toSort);
+		assertEquals(expected, toSort);
+	}
+	
 	@Test
 	void sortingEqualInterestRateAccounts() {
 		List<Account> toSort = new ArrayList<Account>();

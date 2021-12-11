@@ -13,6 +13,8 @@ public class MainProgram {
 		for(int i = 0; i < totalMonths; i++) {
 			runOnce(history, income);
 		}
+		
+		printHistory(history);
 	}
 	
 	public void runOnce(Stack<List<Account>> history, double income) {
@@ -25,6 +27,7 @@ public class MainProgram {
 		//Pay minimums into each loan:
 		remainingIncome = payMinimumsOnLoans(accounts, remainingIncome);
 		
+		//Pay highest priority accounts first, then distribute remaining funds to following accounts.
 		while(remainingIncome > 0) {
 			for(Account account : accounts) {
 				remainingIncome = account.makePayment(remainingIncome);
@@ -76,6 +79,28 @@ public class MainProgram {
 	
 	public Stack<List<Account>> getHistory(){
 		return this.history;
+	}
+	
+	public void printHistory(Stack<List<Account>> history) {
+		System.out.println("------------------------------------------------------------------------------------------------------");
+		System.out.printf(" %14s | %20s | %12s | %12s | %14s | %20s |", "Payment Period", "Account Name", "Account Type", "Balance", "Interest Rate", "Payments Made");
+		System.out.println();
+		System.out.println("------------------------------------------------------------------------------------------------------");
+		for(int i = 0; i < history.size(); i++) {
+			for(Account account : history.get(i)) {
+				System.out.format(" %14s | %20s | %12s | %12s | %14s | %20s |",
+						i,
+						account.getAccountName(), 
+						account.getClass().getSimpleName(), 
+						String.format("%.2f", account.getBalance()),
+						account.getInterestRate(),
+						String.format("%.2f", account.getPaymentForPeriod()));
+				System.out.println();
+			}
+			System.out.println("------------------------------------------------------------------------------------------------------");
+		}
+		
+		
 	}
 	
 	

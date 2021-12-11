@@ -32,12 +32,15 @@ public class Loan extends Account {
 		assert isPaidOff() == false;
 		
 		double originalBalance = getBalance();
+		
 		if (getBalance() + payment > 0) {
+			setPaymentForPeriod(getPaymentForPeriod() + Math.abs(originalBalance));
 			setBalance(0);
 			this.paidOff = true;
 			return originalBalance + payment;
 		} else {
-			setBalance(getBalance() + payment);
+			setPaymentForPeriod(getPaymentForPeriod() + payment);
+			setBalance(getBalance() + payment);			
 			return 0.0;
 		}
 	}

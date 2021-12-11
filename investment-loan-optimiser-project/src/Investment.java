@@ -18,6 +18,7 @@ public class Investment extends Account {
 	
 	@Override
 	public double makePayment(double payment) {
+		setPaymentForPeriod(payment);
 		setBalance(getBalance() + payment);
 		return 0.0;
 	}
