@@ -1,21 +1,29 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 import java.util.Stack;
 
-public class MainProgram {
+@SuppressWarnings("deprecation")
+public class MainProgram extends Observable {
 	
 	private Stack<List<Account>> history = new Stack<List<Account>>();
+	private double income;
+	private double totalMonths;
 	
 	public MainProgram(List<Account> startAccounts, double income, double totalMonths) {
 		this.history.add(startAccounts);
-		
-		for(int i = 0; i < totalMonths; i++) {
+		this.income = income;
+		this.totalMonths = totalMonths;
+	}
+	
+	public void run(Stack<List<Account>> history, double income, int iterations) {
+		for(int i = 0; i < iterations; i++) {
 			runOnce(history, income);
 		}
-		
-		printHistory(history);
 	}
+	
+	
 	
 	public void runOnce(Stack<List<Account>> history, double income) {
 		double remainingIncome = income;
@@ -83,18 +91,19 @@ public class MainProgram {
 	
 	public void printHistory(Stack<List<Account>> history) {
 		System.out.println("------------------------------------------------------------------------------------------------------");
-		System.out.printf(" %14s | %20s | %12s | %12s | %14s | %20s |", "Payment Period", "Account Name", "Account Type", "Balance", "Interest Rate", "Payments Made");
+		System.out.printf(" %14s | %20s | %12s | %12s | %14s | %20s | %20s |", "Payment Period", "Account Name", "Account Type", "Balance", "Interest Rate", "Payments Made", "Interest For Period");
 		System.out.println();
 		System.out.println("------------------------------------------------------------------------------------------------------");
 		for(int i = 0; i < history.size(); i++) {
 			for(Account account : history.get(i)) {
-				System.out.format(" %14s | %20s | %12s | %12s | %14s | %20s |",
+				System.out.format(" %14s | %20s | %12s | %12s | %14s | %20s | %20s |",
 						i,
 						account.getAccountName(), 
 						account.getClass().getSimpleName(), 
 						String.format("%.2f", account.getBalance()),
 						account.getInterestRate(),
-						String.format("%.2f", account.getPaymentForPeriod()));
+						String.format("%.2f", account.getPaymentForPeriod()),
+						String.format("%.2f", account.getInterestForPeriod()));
 				System.out.println();
 			}
 			System.out.println("------------------------------------------------------------------------------------------------------");

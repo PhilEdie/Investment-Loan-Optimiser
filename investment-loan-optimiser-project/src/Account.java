@@ -70,9 +70,7 @@ public abstract class Account implements Comparable<Account>{
 				return 1;
 			}
 		}
-		
-		
-	
+
 		//Same class, same interest rate. Return in alphabetical order.
 		if(this.getAccountName().compareTo(other.getAccountName()) < 0) {
 			return -1;

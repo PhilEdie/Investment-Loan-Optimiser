@@ -13,16 +13,18 @@ class Tests {
 	void payOffLoanWithPayment() {
 		Loan loan = new Loan("Loan 1", 1.05, -500, 100);
 		double leftoverIncome = loan.makePayment(1000);
-		assert(leftoverIncome == 500.0);
+		assertEquals(500.0, leftoverIncome);
+		assertEquals(loan.getPaymentForPeriod(), 500);
 	}
 	
 	@Test
 	void payOffLoanWithMinimumPayment() {
 		Loan loan = new Loan("Loan 1", 1.05, -100, 200);
 		double leftoverIncome = loan.makeMinimumPayment();
-		assert(leftoverIncome == 100.0);
+		assertEquals(100.0, leftoverIncome);
+		assertEquals(loan.getPaymentForPeriod(), 100);
 	}
-	
+
 	@Test 
 	void sortingAccounts1() {
 		List<Account> toSort = new ArrayList<Account>();
@@ -85,7 +87,8 @@ class Tests {
 		List<Account> accounts = new ArrayList<Account>();
 		accounts.add(new Loan("Loan 1", 1.05, -1000, 100));
 		MainProgram p = new MainProgram(accounts, 100, 1);
-		assert(p.getHistory().peek().get(0).getBalance() == -945);	
+		assertEquals(-945, p.getHistory().peek().get(0).getBalance());
+
 	}
 	
 	@Test
@@ -106,7 +109,6 @@ class Tests {
 				+  "Investment 1[interestRate=1.05, balance=$105.00]]",
 				topOfStack.toString() 
 				);
-		
 	}
 	
 	
