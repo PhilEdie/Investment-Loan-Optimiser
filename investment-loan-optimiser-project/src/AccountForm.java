@@ -182,10 +182,13 @@ public class AccountForm {
 	
 
 	public void setTotalPeriods(String periods) {
+		System.out.println("Periods: " + periods);
 		if(validatePositiveNumber(periods) && Integer.parseInt(periods) != 0) {
+			System.out.println("Reached1");
 			this.totalPeriods = Integer.parseInt(periods);
 			this.validTotalPeriods = true;
 		} else {
+			System.out.println("Reached2");
 			this.totalPeriods = 1;
 			this.validTotalPeriods = false;
 		}

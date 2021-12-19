@@ -12,6 +12,10 @@ public abstract class Account implements Comparable<Account>{
 
 	
 	public Account(String accountName, double interestRate, double balance) {
+		
+		assert !accountName.isBlank();
+		assert interestRate >= 1;
+		
 		this.accountName = accountName;
 		this.interestRate = interestRate;
 		this.balance = balance;

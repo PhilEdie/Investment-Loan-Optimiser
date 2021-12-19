@@ -93,7 +93,7 @@ class Tests {
 	}
 	
 	@Test
-	void distributeAcrossLoans() {
+	void distributeAcrossLoans1() {
 		
 		List<Account> accounts = new ArrayList<Account>();
 		MainProgram p = new MainProgram();
@@ -113,6 +113,14 @@ class Tests {
 				);
 	}
 	
-	
-
+	@Test
+	void distributeAcrossLoans2() {
+		
+		List<Account> accounts = new ArrayList<Account>();
+		MainProgram p = new MainProgram();
+		p.addAccount(new Loan("Loan 1", 1.05, -200, 100));
+		p.addAccount(new Loan("Loan 2", 1.05, -200, 100));
+		p.addAccount(new Investment("Investment 1", 1.05, 0));
+		p.run(10, 500);
+	}
 }

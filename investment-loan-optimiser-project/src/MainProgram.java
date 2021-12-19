@@ -8,8 +8,6 @@ public class MainProgram  {
 	
 	private List<Account> startingAccounts = new ArrayList<Account>();
 	private Stack<List<Account>> history = new Stack<List<Account>>();
-	private double income = 0;
-	private double totalIterations = 1;
 	
 	public MainProgram() {}
 	
@@ -20,7 +18,7 @@ public class MainProgram  {
 		
 		this.history = new Stack<List<Account>>();
 		this.history.add(startingAccounts);
-		for(int i = 0; i < this.totalIterations; i++) {
+		for(int i = 0; i < totalIterations; i++) {
 			runOnce(history, income);
 		}
 		printHistory(this.history);
@@ -41,6 +39,9 @@ public class MainProgram  {
 		//Pay highest priority accounts first, then distribute remaining funds to following accounts.
 		while(remainingIncome > 0) {
 			for(Account account : accounts) {
+				if(account instanceof Loan && ((Loan) account).isPaidOff()) {
+					continue;	//Skip paid off loans.
+				}
 				remainingIncome = account.makePayment(remainingIncome);
 			}
 		}
@@ -54,7 +55,7 @@ public class MainProgram  {
 	public double payMinimumsOnLoans(List<Account> accounts, double income) {
 		double incomeAfterMinimums = income;
 		for(Account account : accounts) {
-			if(account instanceof Loan){
+			if(account instanceof Loan && !((Loan) account).isPaidOff()){
 				Loan loan = (Loan) account;
 				double change = loan.makeMinimumPayment();
 				incomeAfterMinimums = incomeAfterMinimums - loan.getMinimumPayment() + change;
@@ -126,21 +127,15 @@ public class MainProgram  {
 	public boolean removeAccount(Account toRemove) {
 		return startingAccounts.remove(toRemove);
 	}
-
-	public double getIncome() {
-		return income;
-	}
-
-	public double getTotalIterations() {
-		return totalIterations;
-	}
-
-	public void setIncome(double income) {
-		this.income = income;
-	}
-
-	public void setTotalIterations(double totalIterations) {
-		this.totalIterations = totalIterations;
-	}
 	
+	public boolean removeAccount(String accountName) {
+		for(Account account : startingAccounts) {
+			if(account.getAccountName().equals(accountName)) {
+				startingAccounts.remove(account);
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
