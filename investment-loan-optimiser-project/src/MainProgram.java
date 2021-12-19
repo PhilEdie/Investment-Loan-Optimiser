@@ -23,6 +23,7 @@ public class MainProgram  {
 		for(int i = 0; i < this.totalIterations; i++) {
 			runOnce(history, income);
 		}
+		printHistory(this.history);
 	}
 	
 	public void runOnce(Stack<List<Account>> history, double income) {

@@ -21,9 +21,20 @@ public class AccountForm {
 	private double interestRateValue = 1;
 	private boolean validInterestRate = false;
 
+	
+
 	private String formattedMinimumPayment = "$0.00";
 	private double minimumPaymentValue = 0;
 	private boolean validMinimumPayment = false;
+	
+	private String formattedIncome = "$0.00";
+	private double incomeValue = 0;
+	private boolean validIncome = false;
+	
+	
+	private int totalPeriods = 1;
+	private boolean validTotalPeriods = false;
+	
 
 	public Class<? extends Account> getType() {
 		return type;
@@ -52,6 +63,10 @@ public class AccountForm {
 	public String getFormattedInterestRate() {
 		return formattedInterestRate;
 	}
+	
+	public String getFormattedIncome() {
+		return formattedIncome;
+	}
 
 	public double getInterestRateValue() {
 		return interestRateValue;
@@ -59,6 +74,23 @@ public class AccountForm {
 
 	public boolean isValidInterestRate() {
 		return validInterestRate;
+	}
+	
+	public double getIncomeValue() {
+		return incomeValue;
+	}
+
+	public int getTotalPeriods() {
+		return totalPeriods;
+	}
+	
+	public boolean isValidIncome() {
+		return validIncome;
+	}
+	
+
+	public boolean isValidTotalPeriods() {
+		return validTotalPeriods;
 	}
 
 	public String getFormattedMinimumPayment() {
@@ -134,14 +166,37 @@ public class AccountForm {
 			this.minimumPaymentValue = 0;
 			this.validMinimumPayment = false;
 		}
-		
 	}
+	
+	public void setIncome(String income) {
+		if(validatePositiveNumber(income)) {
+			this.formattedIncome = convertToDollarFormat(income);
+			this.incomeValue = Double.parseDouble(income);
+			this.validIncome = true;
+		} else {
+			this.formattedIncome = "$0.00";
+			this.incomeValue = 0;
+			this.validIncome = false;
+		}
+	}
+	
+
+	public void setTotalPeriods(String periods) {
+		if(validatePositiveNumber(periods) && Integer.parseInt(periods) != 0) {
+			this.totalPeriods = Integer.parseInt(periods);
+			this.validTotalPeriods = true;
+		} else {
+			this.totalPeriods = 1;
+			this.validTotalPeriods = false;
+		}
+	}
+	
 
 	public boolean validateEntries() {
 		if(type.equals(Investment.class)) {
-			return validName && validBalance && validInterestRate;
+			return validName && validBalance && validInterestRate && validIncome && validTotalPeriods;
 		}
-		return validName && validBalance && validInterestRate && validMinimumPayment;
+		return validName && validBalance && validInterestRate && validMinimumPayment && validIncome && validTotalPeriods;
 	}
 
 	public boolean validateNumber(String text) {
