@@ -3,9 +3,10 @@ import java.util.*;
 public abstract class Account implements Comparable<Account>{
 
 
-	private double interestRate;
-	private double balance;
+	
 	private String accountName;
+	private double balance;
+	private double interestRate;
 	private double interestForPeriod = 0;
 	private double paymentForPeriod = 0;
 

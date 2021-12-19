@@ -5,6 +5,7 @@ public class Investment extends Account {
 
 	public Investment(String accountName, double interestRate, double balance) {
 		super(accountName, interestRate, balance);
+		assert balance >= 0;
 	}
 	
 	public Investment(Investment toCopy) {
