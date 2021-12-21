@@ -27,9 +27,9 @@ public class AccountForm {
 	private double minimumPaymentValue = 0;
 	private boolean validMinimumPayment = false;
 	
-	private String formattedIncome = "$0.00";
-	private double incomeValue = 0;
-	private boolean validIncome = false;
+	private String formattedAvailableFunds = "$0.00";
+	private double availableFundsValue = 0;
+	private boolean validAvailableFunds = false;
 	
 	
 	private int totalPeriods = 1;
@@ -65,7 +65,7 @@ public class AccountForm {
 	}
 	
 	public String getFormattedIncome() {
-		return formattedIncome;
+		return formattedAvailableFunds;
 	}
 
 	public double getInterestRateValue() {
@@ -77,7 +77,7 @@ public class AccountForm {
 	}
 	
 	public double getIncomeValue() {
-		return incomeValue;
+		return availableFundsValue;
 	}
 
 	public int getTotalPeriods() {
@@ -85,7 +85,7 @@ public class AccountForm {
 	}
 	
 	public boolean isValidIncome() {
-		return validIncome;
+		return validAvailableFunds;
 	}
 	
 
@@ -116,7 +116,7 @@ public class AccountForm {
 			this.name = name;
 			this.validName = true;
 		} else {
-			this.name = "default";
+			this.name = "";
 			this.validName = false;
 		}
 	}
@@ -170,13 +170,13 @@ public class AccountForm {
 	
 	public void setIncome(String income) {
 		if(validatePositiveNumber(income)) {
-			this.formattedIncome = convertToDollarFormat(income);
-			this.incomeValue = Double.parseDouble(income);
-			this.validIncome = true;
+			this.formattedAvailableFunds = convertToDollarFormat(income);
+			this.availableFundsValue = Double.parseDouble(income);
+			this.validAvailableFunds = true;
 		} else {
-			this.formattedIncome = "$0.00";
-			this.incomeValue = 0;
-			this.validIncome = false;
+			this.formattedAvailableFunds = "$0.00";
+			this.availableFundsValue = 0;
+			this.validAvailableFunds = false;
 		}
 	}
 	
@@ -195,11 +195,15 @@ public class AccountForm {
 	}
 	
 
-	public boolean validateEntries() {
+	public boolean validateEntriesBeforeAdd() {
 		if(type.equals(Investment.class)) {
-			return validName && validBalance && validInterestRate && validIncome && validTotalPeriods;
+			return validName && validBalance && validInterestRate;
 		}
-		return validName && validBalance && validInterestRate && validMinimumPayment && validIncome && validTotalPeriods;
+		return validName && validBalance && validInterestRate && validMinimumPayment;
+	}
+	
+	public boolean validateEntriesBeforeConfirm() {
+		return validAvailableFunds && validTotalPeriods;
 	}
 
 	public boolean validateNumber(String text) {
@@ -222,6 +226,8 @@ public class AccountForm {
 		}
 		return true;
 	}
+	
+	
 	
 	public static String convertToDollarFormat(String number) {
 		Locale locale = Locale.US;

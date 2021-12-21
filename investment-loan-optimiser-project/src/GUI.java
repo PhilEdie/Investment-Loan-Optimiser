@@ -52,6 +52,7 @@ public class GUI {
 		frmLoanInvestment = new JFrame();
 		frmLoanInvestment.setTitle("Loan & Investment Optimiser");
 		frmLoanInvestment.setBounds(100, 100, 915, 554);
+		frmLoanInvestment.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frmLoanInvestment.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 20, 0, 20, 0 };

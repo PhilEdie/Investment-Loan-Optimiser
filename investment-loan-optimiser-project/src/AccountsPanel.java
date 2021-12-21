@@ -12,7 +12,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
@@ -27,10 +26,10 @@ import javax.swing.ListSelectionModel;
 public class AccountsPanel extends JPanel {
 
 	private GUI gui;
-	
+
 	private Locale locale = Locale.US;
 	private NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(locale);
-	
+
 	private JFormattedTextField nameEntry;
 	private JLabel typeLabel;
 	private JComboBox typeComboBox;
@@ -48,7 +47,6 @@ public class AccountsPanel extends JPanel {
 	private JFormattedTextField interestRateResult;
 	private JScrollPane accountsScrollPane;
 	private JTable accountsTable;
-	private JSeparator separator;
 	private JFormattedTextField incomeEntry;
 	private JFormattedTextField totalPeriodsEntry;
 	private JLabel incomeLabel;
@@ -61,8 +59,8 @@ public class AccountsPanel extends JPanel {
 	private JLabel interestRateInvalid;
 	private JLabel incomeInvalid;
 	private JLabel totalPeriodsInvalid;
-	
-
+	private JLabel confirmInvalid;
+	private JLabel addInvalid;
 
 	/**
 	 * Create the application.
@@ -80,10 +78,10 @@ public class AccountsPanel extends JPanel {
 
 		GridBagLayout gbl_this = new GridBagLayout();
 		gbl_this.columnWidths = new int[] { 0, 150, 150, 0 };
-		gbl_this.rowHeights = new int[] { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0 };
+		gbl_this.rowHeights = new int[] { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0 };
 		gbl_this.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
-		gbl_this.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_this.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		this.setLayout(gbl_this);
 
 		// =====================================================================
@@ -371,6 +369,22 @@ public class AccountsPanel extends JPanel {
 		interestRateInvalid.setBackground(Color.RED);
 
 		addButton = new JButton("Add");
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (gui.mainProgram.hasAccountWithName(gui.form.getName())) {
+					addInvalid.setText("Account with name \"" + gui.form.getName() + "\" already exists.");
+				} else if (!gui.form.validateEntriesBeforeAdd()) {
+					addInvalid.setText("Please complete all fields.");
+					showBlankFields();
+				} else {
+					gui.mainProgram.addAccount(createAccountFromForm());
+					resetEntryFields();
+					update();
+				}
+
+				
+			}
+		});
 		GridBagConstraints gbc_addButton = new GridBagConstraints();
 		gbc_addButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_addButton.gridwidth = 2;
@@ -379,14 +393,13 @@ public class AccountsPanel extends JPanel {
 		gbc_addButton.gridy = 10;
 		this.add(addButton, gbc_addButton);
 
-		separator = new JSeparator();
-		GridBagConstraints gbc_separator = new GridBagConstraints();
-		gbc_separator.fill = GridBagConstraints.HORIZONTAL;
-		gbc_separator.gridwidth = 3;
-		gbc_separator.insets = new Insets(0, 0, 5, 0);
-		gbc_separator.gridx = 0;
-		gbc_separator.gridy = 11;
-		this.add(separator, gbc_separator);
+		addInvalid = new JLabel("");
+		GridBagConstraints gbc_addInvalid = new GridBagConstraints();
+		gbc_addInvalid.gridwidth = 2;
+		gbc_addInvalid.insets = new Insets(0, 0, 5, 5);
+		gbc_addInvalid.gridx = 1;
+		gbc_addInvalid.gridy = 11;
+		add(addInvalid, gbc_addInvalid);
 
 		incomeLabel = new JLabel("Income For Period");
 		GridBagConstraints gbc_incomeLabel = new GridBagConstraints();
@@ -466,14 +479,21 @@ public class AccountsPanel extends JPanel {
 		confirmButton = new JButton("Confirm");
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (gui.form.validateEntries() && gui.mainProgram.getStartingAccounts().size() > 0) {
-					System.out.println("Valid.");
-					gui.mainProgram.run(gui.form.getTotalPeriods(), gui.form.getIncomeValue());
-					gui.tabbedPane.setSelectedIndex(1);
-					gui.resultsPanel.update();
-				} else {
-					System.out.println("Invalid.");
+				if (gui.mainProgram.getStartingAccounts().size() == 0) {
+					confirmInvalid.setText("Please enter at least one account.");
+					return;
+				} else if (!gui.form.validateEntriesBeforeConfirm()) {
+					confirmInvalid.setText("Please complete all fields.");
+					return;
+				} else if(gui.form.getIncomeValue() < gui.mainProgram.getTotalMinimumPayments()) {
+					confirmInvalid.setText("Insufficient income to cover minimum payments of "
+				+ AccountForm.convertToDollarFormat(gui.mainProgram.getTotalMinimumPayments()));
+					return;
 				}
+				confirmInvalid.setText("");
+				gui.mainProgram.run(gui.form.getTotalPeriods(), gui.form.getIncomeValue());
+				gui.tabbedPane.setSelectedIndex(1);
+				gui.resultsPanel.update();
 			}
 		});
 		GridBagConstraints gbc_confirmButton = new GridBagConstraints();
@@ -484,6 +504,14 @@ public class AccountsPanel extends JPanel {
 		gbc_confirmButton.gridy = 16;
 		this.add(confirmButton, gbc_confirmButton);
 
+		confirmInvalid = new JLabel("");
+		GridBagConstraints gbc_confirmInvalid = new GridBagConstraints();
+		gbc_confirmInvalid.gridwidth = 2;
+		gbc_confirmInvalid.insets = new Insets(0, 0, 5, 0);
+		gbc_confirmInvalid.gridx = 1;
+		gbc_confirmInvalid.gridy = 17;
+		add(confirmInvalid, gbc_confirmInvalid);
+
 		// =====================================================================
 		// TABLE
 		// =====================================================================
@@ -493,7 +521,7 @@ public class AccountsPanel extends JPanel {
 		gbc_accountsScrollPane.fill = GridBagConstraints.BOTH;
 		gbc_accountsScrollPane.gridwidth = 3;
 		gbc_accountsScrollPane.gridx = 0;
-		gbc_accountsScrollPane.gridy = 17;
+		gbc_accountsScrollPane.gridy = 18;
 		this.add(accountsScrollPane, gbc_accountsScrollPane);
 
 		DefaultTableModel model = new DefaultTableModel();
@@ -502,8 +530,8 @@ public class AccountsPanel extends JPanel {
 		model.addColumn("Balance");
 		model.addColumn("Interest Rate");
 		model.addColumn("Minimum Payment (if loan)");
-		
-		accountsTable = new JTable(model){
+
+		accountsTable = new JTable(model) {
 			@Override
 			public boolean isCellEditable(int row, int col) {
 				return false;
@@ -514,24 +542,22 @@ public class AccountsPanel extends JPanel {
 		accountsTable.setShowVerticalLines(true);
 		accountsScrollPane.setViewportView(accountsTable);
 		accountsTable.getTableHeader().setReorderingAllowed(false);
-	    accountsTable.getTableHeader().setResizingAllowed(false);
-		
+		accountsTable.getTableHeader().setResizingAllowed(false);
+
 		InputMap inputMap = accountsTable.getInputMap(WHEN_FOCUSED);
 		ActionMap actionMap = accountsTable.getActionMap();
 
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
 		actionMap.put("delete", new AbstractAction() {
-		    public void actionPerformed(ActionEvent evt) {
-		       int row = accountsTable.getSelectedRow();
-		       DefaultTableModel model = (DefaultTableModel)accountsTable.getModel();
-		       String accountName = (String) model.getValueAt(row, 0); 
-		       model.removeRow(row);
-		       gui.mainProgram.removeAccount(accountName);
-		    }
+			public void actionPerformed(ActionEvent evt) {
+				int row = accountsTable.getSelectedRow();
+				DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
+				String accountName = (String) model.getValueAt(row, 0);
+				model.removeRow(row);
+				gui.mainProgram.removeAccount(accountName);
+			}
 		});
-		
-		
-		
+
 		totalPeriodsEntry.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
@@ -568,20 +594,6 @@ public class AccountsPanel extends JPanel {
 				update();
 			}
 		});
-		addButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (gui.form.validateEntries()) {
-					if (gui.form.getType().equals(Investment.class)) {
-						gui.mainProgram.addAccount(
-								new Investment(gui.form.getName(), gui.form.getInterestRateValue(), gui.form.getBalanceValue()));
-					} else {
-						gui.mainProgram.addAccount(new Loan(gui.form.getName(), gui.form.getInterestRateValue(),
-								gui.form.getBalanceValue(), gui.form.getMinimumPaymentValue()));
-					}
-				}
-				update();
-			}
-		});
 
 		typeComboBox.addActionListener(new ActionListener() {
 
@@ -608,53 +620,104 @@ public class AccountsPanel extends JPanel {
 
 	}
 
+	public Account createAccountFromForm() {
+		if (gui.form.getType().equals(Investment.class)) {
+			return new Investment(gui.form.getName(), gui.form.getInterestRateValue(), gui.form.getBalanceValue());
+		} else {
+			return new Loan(gui.form.getName(), gui.form.getInterestRateValue(), gui.form.getBalanceValue(),
+					gui.form.getMinimumPaymentValue());
+		}
+	}
+	
+	
+	
 	public void update() {
-		// Set the results fields
+		resetInvalidLabels();
+		showInvalidFields();
+		updateResultsFields();
+		updateTable();
+	}
+	
+	public void resetInvalidLabels() {
+		nameInvalid.setText("");
+		minPaymentInvalid.setText("");
+		interestRateInvalid.setText("");
+		balanceInvalid.setText("");
+		addInvalid.setText("");
+		confirmInvalid.setText("");
+	}
+	
+	
+	public void resetEntryFields() {
+		nameEntry.setText(gui.mainProgram.getDefaultAccountName(gui.form.getType()));
+		minPaymentEntry.setText("");
+		interestRateEntry.setText("");
+		balanceEntry.setText("");
+	}
+
+	public void showBlankFields() {
+		if (nameEntry.getText().isEmpty()) {
+			nameInvalid.setText("Please enter account name.");
+		}
+
+		if (minPaymentEntry.getText().isEmpty() && gui.form.getType().equals(Loan.class)) {
+			minPaymentInvalid.setText("Please enter minimum payment.");
+		}
+
+		if (interestRateEntry.getText().isEmpty()) {
+			interestRateInvalid.setText("Please enter interest rate.");
+		}
+
+		if (balanceEntry.getText().isEmpty()) {
+			balanceInvalid.setText("Please enter balance.");
+		}
+	}
+
+	public void updateResultsFields() {
 		nameResult.setText(gui.form.getName());
 		minPaymentResult.setText(gui.form.getFormattedMinimumPayment());
 		balanceResult.setText(gui.form.getFormattedBalance());
 		interestRateResult.setText(gui.form.getFormattedInterestRate());
 		incomeResult.setText(gui.form.getFormattedIncome());
 		totalPeriodsResult.setText("" + gui.form.getTotalPeriods());
+	}
+	
+	
 
-		// Set error messages
-
-		if (nameEntry.getText().isEmpty() || gui.form.isValidName()) {
-			nameInvalid.setText("");
-		} else {
+	public void showInvalidFields() {
+	
+		if (!nameEntry.getText().isEmpty() && !gui.form.isValidName()) {
 			nameInvalid.setText("Invalid name.");
 		}
 
-		if (minPaymentEntry.getText().isEmpty() || gui.form.isValidMinimumPayment()) {
-			minPaymentInvalid.setText("");
-		} else {
+		if (gui.form.getType().equals(Investment.class) 
+				&& !minPaymentEntry.getText().isEmpty() 
+				&& !gui.form.isValidMinimumPayment()) {
 			minPaymentInvalid.setText("Invalid minimum payment.");
 		}
-
-		if (interestRateEntry.getText().isEmpty() || gui.form.isValidInterestRate()) {
-			interestRateInvalid.setText("");
-		} else {
+		
+		if(!interestRateEntry.getText().isEmpty()
+				&& !gui.form.isValidInterestRate()) {
 			interestRateInvalid.setText("Invalid interest rate.");
 		}
-
-		if (balanceEntry.getText().isEmpty() || gui.form.isValidBalance()) {
-			balanceInvalid.setText("");
-		} else {
+		
+		if(!balanceEntry.getText().isEmpty()
+				&& !gui.form.isValidBalance()) {
 			balanceInvalid.setText("Invalid balance.");
 		}
-
-		if (incomeEntry.getText().isEmpty() || gui.form.isValidIncome()) {
-			incomeInvalid.setText("");
-		} else {
+		
+		if(!incomeEntry.getText().isEmpty()
+				&& !gui.form.isValidIncome()) {
 			incomeInvalid.setText("Invalid income.");
 		}
-
-		if (totalPeriodsEntry.getText().isEmpty() || gui.form.isValidTotalPeriods()) {
-			totalPeriodsInvalid.setText("");
-		} else {
+		
+		if(!totalPeriodsEntry.getText().isEmpty()
+				&& !gui.form.isValidTotalPeriods()) {
 			totalPeriodsInvalid.setText("Invalid total periods.");
 		}
+	}
 
+	public void updateTable() {
 		// clear table
 		DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
 		model.setRowCount(0);
