@@ -5,8 +5,8 @@ import javax.swing.table.DefaultTableModel;
 public class PaymentPeriodTable extends JTable {
 	
 	public PaymentPeriodTable() {
+		setRowSelectionAllowed(false);
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("Payment Period");
 		model.addColumn("Account Name");
 		model.addColumn("Account Type");
 		model.addColumn("Balance");

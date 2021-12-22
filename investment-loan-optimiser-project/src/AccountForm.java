@@ -10,8 +10,8 @@ public class AccountForm {
 
 	private Class<? extends Account> type = Investment.class;
 
-	private String name = "";
-	private boolean validName = false;
+	private String name = "Investment1";
+	private boolean validName = true;
 
 	private String formattedBalance = "$0.00";
 	private double balanceValue = 0;
@@ -128,13 +128,13 @@ public class AccountForm {
 
 	public void setBalance(String balance) {
 		if(type.equals(Investment.class) && validatePositiveNumber(balance)) {
-			this.formattedBalance = convertToDollarFormat(balance);
+			this.formattedBalance = Utilities.convertToDollarFormat(balance);
 			this.balanceValue = Double.parseDouble(balance);
 			this.validBalance = true;
 		} else if(type.equals(Loan.class) && validateNumber(balance)) {
 			this.balanceValue = Math.abs(Double.parseDouble(balance));
 			this.balanceValue *= -1;
-			this.formattedBalance = convertToDollarFormat(""+balanceValue);
+			this.formattedBalance = Utilities.convertToDollarFormat(""+balanceValue);
 			this.validBalance = true;
 		} else {
 			this.formattedBalance = "$0.00";
@@ -146,7 +146,7 @@ public class AccountForm {
 
 	public void setInterestRate(String interestRate) {
 		if(validatePositiveNumber(interestRate)) {
-			this.formattedInterestRate = convertToPercentageFormat(interestRate);
+			this.formattedInterestRate = Utilities.convertToPercentageFormat(interestRate);
 			this.interestRateValue = 1 + (Double.parseDouble(interestRate)/100);
 			this.validInterestRate = true;
 		} else {
@@ -158,7 +158,7 @@ public class AccountForm {
 	
 	public void setMinimumPayment(String minimumPayment) {
 		if(validatePositiveNumber(minimumPayment)) {
-			this.formattedMinimumPayment = convertToDollarFormat(minimumPayment);
+			this.formattedMinimumPayment = Utilities.convertToDollarFormat(minimumPayment);
 			this.minimumPaymentValue = Double.parseDouble(minimumPayment);
 			this.validMinimumPayment = true;
 		} else {
@@ -170,7 +170,7 @@ public class AccountForm {
 	
 	public void setIncome(String income) {
 		if(validatePositiveNumber(income)) {
-			this.formattedAvailableFunds = convertToDollarFormat(income);
+			this.formattedAvailableFunds = Utilities.convertToDollarFormat(income);
 			this.availableFundsValue = Double.parseDouble(income);
 			this.validAvailableFunds = true;
 		} else {
@@ -229,23 +229,5 @@ public class AccountForm {
 	
 	
 	
-	public static String convertToDollarFormat(String number) {
-		Locale locale = Locale.US;
-		NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(locale);
-		return dollarFormat.format(Double.parseDouble(number));
-	}
 	
-	public static String convertToDollarFormat(double number) {
-		Locale locale = Locale.US;
-		NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(locale);
-		return dollarFormat.format(number);
-	}
-	
-	public static String convertToPercentageFormat(String interestRate) {
-		return String.format("%.2f", Double.parseDouble(interestRate)) + "%";
-	}
-	
-	public static String convertToPercentageFormat(double interestRate) {
-		return String.format("%.2f", interestRate) + "%";
-	}
 }

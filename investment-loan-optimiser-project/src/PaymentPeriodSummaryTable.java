@@ -6,7 +6,6 @@ public class PaymentPeriodSummaryTable extends JTable {
 	
 	public PaymentPeriodSummaryTable() {
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("Payment Period");
 		model.addColumn("Loans Paid Off");
 		model.addColumn("Net Worth");
 		model.addColumn("Change In Net Worth");

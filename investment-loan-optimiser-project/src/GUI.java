@@ -76,6 +76,8 @@ public class GUI {
 		tabbedPane.addTab("Add Accounts", null, accountsTab, null);
 		
 		resultsTab = new ResultsTab(this);
+		GridBagLayout gridBagLayout_1 = (GridBagLayout) resultsTab.getLayout();
+		gridBagLayout_1.rowWeights = new double[]{1.0};
 		tabbedPane.addTab("Results", null, resultsTab, null);
 	}
 

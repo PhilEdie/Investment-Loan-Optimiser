@@ -101,6 +101,7 @@ public class AccountsTab extends JPanel {
 		// Account Name Text Entry
 
 		nameEntry = new JFormattedTextField();
+		nameEntry.setText("Investment1");
 		GridBagConstraints gbc_nameEntry = new GridBagConstraints();
 		gbc_nameEntry.fill = GridBagConstraints.HORIZONTAL;
 		gbc_nameEntry.insets = new Insets(0, 0, 5, 5);
@@ -487,7 +488,7 @@ public class AccountsTab extends JPanel {
 					return;
 				} else if(gui.form.getIncomeValue() < gui.mainProgram.getTotalMinimumPayments()) {
 					confirmInvalid.setText("Insufficient income to cover minimum payments of "
-				+ AccountForm.convertToDollarFormat(gui.mainProgram.getTotalMinimumPayments()));
+				+ Utilities.convertToDollarFormat(gui.mainProgram.getTotalMinimumPayments()));
 					return;
 				}
 				confirmInvalid.setText("");
@@ -733,14 +734,14 @@ public class AccountsTab extends JPanel {
 
 			if (account instanceof Investment) {
 				model.addRow(new Object[] { account.getAccountName(), account.getClass().getSimpleName(),
-						AccountForm.convertToDollarFormat(account.getBalance()),
-						AccountForm.convertToPercentageFormat((account.getInterestRate() - 1) * 100), "N/A" });
+						Utilities.convertToDollarFormat(account.getBalance()),
+						Utilities.convertToPercentageFormat((account.getInterestRate() - 1) * 100), "N/A" });
 			} else {
 				Loan loan = (Loan) account;
 				model.addRow(new Object[] { loan.getAccountName(), loan.getClass().getSimpleName(),
-						AccountForm.convertToDollarFormat(loan.getBalance()),
-						AccountForm.convertToPercentageFormat((loan.getInterestRate() - 1) * 100),
-						AccountForm.convertToDollarFormat(loan.getMinimumPayment()) });
+						Utilities.convertToDollarFormat(loan.getBalance()),
+						Utilities.convertToPercentageFormat((loan.getInterestRate() - 1) * 100),
+						Utilities.convertToDollarFormat(loan.getMinimumPayment()) });
 			}
 
 		}
