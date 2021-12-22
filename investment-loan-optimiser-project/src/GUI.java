@@ -9,6 +9,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
 
 public class GUI {
 	
@@ -16,8 +18,9 @@ public class GUI {
 	public MainProgram mainProgram;
 	public JFrame frmLoanInvestment;
 	public JTabbedPane tabbedPane;
-	public AccountsPanel accountsPanel;
-	public ResultsPanel resultsPanel;
+	
+	public AccountsTab accountsTab;
+	public ResultsTab resultsTab;
 	
 	/**
 	 * Launch the application.
@@ -69,11 +72,11 @@ public class GUI {
 		gbc_tabbedPane.gridy = 0;
 		frmLoanInvestment.getContentPane().add(tabbedPane, gbc_tabbedPane);
 		
-		accountsPanel = new AccountsPanel(this);
-		tabbedPane.addTab("Add Accounts", null, accountsPanel, null);
+		accountsTab = new AccountsTab(this);
+		tabbedPane.addTab("Add Accounts", null, accountsTab, null);
 		
-		resultsPanel = new ResultsPanel(this);
-        tabbedPane.addTab("Results", null, resultsPanel, null);	
+		resultsTab = new ResultsTab(this);
+		tabbedPane.addTab("Results", null, resultsTab, null);
 	}
 
 }

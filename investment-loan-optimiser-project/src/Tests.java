@@ -123,4 +123,18 @@ class Tests {
 		p.addAccount(new Investment("Investment 1", 1.05, 0));
 		p.run(10, 500);
 	}
+	
+	@Test
+	void defaultNameRegex() {
+		assert Utilities.isDefaultName("Loan1");
+		assert Utilities.isDefaultName("Investment1");
+		assert Utilities.isDefaultName("Loan10");
+		assert Utilities.isDefaultName("Investment10");
+		assert !Utilities.isDefaultName("Loan");
+		assert !Utilities.isDefaultName("Investment");
+		assert !Utilities.isDefaultName("loan1");
+		assert !Utilities.isDefaultName("investment1");
+		assert !Utilities.isDefaultName("loan10");
+		assert !Utilities.isDefaultName("investment10");
+	}
 }

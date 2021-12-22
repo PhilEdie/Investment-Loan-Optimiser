@@ -23,7 +23,7 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-public class AccountsPanel extends JPanel {
+public class AccountsTab extends JPanel {
 
 	private GUI gui;
 
@@ -65,7 +65,7 @@ public class AccountsPanel extends JPanel {
 	/**
 	 * Create the application.
 	 */
-	public AccountsPanel(GUI gui) {
+	public AccountsTab(GUI gui) {
 		this.gui = gui;
 		initialize();
 
@@ -137,7 +137,7 @@ public class AccountsPanel extends JPanel {
 		gbc_nameResult.gridy = 1;
 		this.add(nameResult, gbc_nameResult);
 		nameResult.setEditable(false);
-		nameResult.setText("Account 1");
+		nameResult.setText("Investment1");
 
 		nameInvalid = new JLabel("");
 		GridBagConstraints gbc_nameInvalid = new GridBagConstraints();
@@ -493,7 +493,7 @@ public class AccountsPanel extends JPanel {
 				confirmInvalid.setText("");
 				gui.mainProgram.run(gui.form.getTotalPeriods(), gui.form.getIncomeValue());
 				gui.tabbedPane.setSelectedIndex(1);
-				gui.resultsPanel.update();
+				gui.resultsTab.update();
 			}
 		});
 		GridBagConstraints gbc_confirmButton = new GridBagConstraints();
@@ -607,12 +607,19 @@ public class AccountsPanel extends JPanel {
 					gui.form.setType(Loan.class);
 					gui.form.setMinimumPayment(minPaymentEntry.getText());
 					gui.form.setBalance(balanceEntry.getText());
+					if(nameEntry.getText().isBlank()|| Utilities.isDefaultName(nameEntry.getText())) {
+						nameEntry.setText(gui.mainProgram.getDefaultAccountName(Loan.class));
+					}
+					
 					update();
 				} else {
 					minPaymentEntry.setEnabled(false);
 					gui.form.setType(Investment.class);
 					gui.form.setMinimumPayment("0");
 					gui.form.setBalance(balanceEntry.getText());
+					if(nameEntry.getText().isBlank() || Utilities.isDefaultName(nameEntry.getText())) {
+						nameEntry.setText(gui.mainProgram.getDefaultAccountName(Investment.class));
+					}
 					update();
 				}
 			}

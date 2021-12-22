@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainProgram {
 
@@ -23,15 +25,30 @@ public class MainProgram {
 		for (int i = 0; i < totalIterations; i++) {
 			runOnce(history, availableFunds);
 		}
-		printHistory(this.history);
 	}
 
 	public void runOnce(Stack<List<Account>> history, double availableFunds) {
-		assert !history.peek().isEmpty();
+		if(history.peek().isEmpty()) {
+			return;
+		}
+		//assert !history.peek().isEmpty();
+		
 		assert availableFunds > 0;
 		double remainingIncome = availableFunds;
 		List<Account> accounts = createCopyOfAccounts(history.peek());
-
+		
+		//Remove paid off loans from working list.
+		List<Account> paidOffLoans = new ArrayList<Account>();
+		for(Account account : accounts) {
+			if(account instanceof Loan && ((Loan) account).isPaidOff()) {
+				paidOffLoans.add(account);
+				System.out.println("Found paid off account.");
+			}
+		}
+		System.out.println("size before: " + accounts.size());
+		accounts.removeAll(paidOffLoans);
+		System.out.println("size after: " + accounts.size());
+		
 		// Sort accounts so high priority accounts will be paid first.
 		Collections.sort(accounts);
 
@@ -49,7 +66,8 @@ public class MainProgram {
 				remainingIncome = account.makePayment(remainingIncome);
 			}
 
-			if (containsAllLoans(accounts) && allLoansPaidOff(accounts)) {
+			
+			if (Utilities.containsAllLoans(accounts) && Utilities.allLoansPaidOff(accounts)) {
 				break;
 			}
 		}
@@ -61,6 +79,7 @@ public class MainProgram {
 	}
 
 	public double payMinimumsOnLoans(List<Account> accounts, double availableFunds) {
+		assert availableFunds > 0;
 		double incomeAfterMinimums = availableFunds;
 		for (Account account : accounts) {
 			if (account instanceof Loan && !((Loan) account).isPaidOff()) {
@@ -85,6 +104,8 @@ public class MainProgram {
 	}
 
 	public List<Account> createCopyOfAccounts(List<Account> toCopy) {
+		
+		assert !toCopy.isEmpty();
 		List<Account> copied = new ArrayList<Account>();
 
 		for (Account account : toCopy) {
@@ -155,23 +176,7 @@ public class MainProgram {
 		return sum;
 	}
 
-	public boolean containsAllLoans(List<Account> accounts) {
-		for (Account account : accounts) {
-			if (!(account instanceof Loan)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean allLoansPaidOff(List<Account> accounts) {
-		for (Account account : accounts) {
-			if (account instanceof Loan && !((Loan) account).isPaidOff()) {
-				return false;
-			}
-		}
-		return true;
-	}
+	
 
 	public boolean removeAccount(String accountName) {
 		for (Account account : startingAccounts) {
@@ -200,5 +205,9 @@ public class MainProgram {
 		}
 		return (name + suffix);
 	}
+	
+	
+	
+	
 
 }

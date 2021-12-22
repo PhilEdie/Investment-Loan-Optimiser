@@ -16,6 +16,7 @@ public class Loan extends Account {
 	public Loan(Loan toCopy) {
 		super(toCopy.getAccountName(), toCopy.getInterestRate(), toCopy.getBalance());
 		this.minimumPayment = toCopy.getMinimumPayment();
+		this.paidOff = toCopy.isPaidOff();
 	}
 
 	/**
@@ -33,7 +34,7 @@ public class Loan extends Account {
 		
 		double originalBalance = getBalance();
 		
-		if (getBalance() + payment > 0) {
+		if (getBalance() + payment >= 0) {
 			setPaymentForPeriod(getPaymentForPeriod() + Math.abs(originalBalance));
 			setBalance(0);
 			this.paidOff = true;
