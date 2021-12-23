@@ -21,67 +21,81 @@ public class PaymentPeriodPanel extends JPanel {
 	public JScrollPane paymentPeriodScrollPane;
 	public JScrollPane paymentPeriodSummaryScrollPane;
 	public JPanel outerPanel;
-	private JLabel accountsLabel;
-	private JLabel summaryLabel;
+	public JLabel accountsLabel;
+	public JLabel summaryLabel;
 	public JPanel innerPanel1;
 	public JPanel innerPanel2;
 	
 	
 	public PaymentPeriodPanel() {
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		
-		outerPanel = new JPanel();
-		outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Payment Period X", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		add(outerPanel);
-		outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
-		
-		accountsLabel = new JLabel("Accounts");
-		outerPanel.add(accountsLabel);
-		
-		innerPanel1 = new JPanel();
-		outerPanel.add(innerPanel1);
-		GridBagLayout gbl_innerPanel1 = new GridBagLayout();
-		gbl_innerPanel1.columnWidths = new int[]{239, 0};
-		gbl_innerPanel1.rowHeights = new int[]{150, 0, 0};
-		gbl_innerPanel1.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_innerPanel1.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		innerPanel1.setLayout(gbl_innerPanel1);
-		
-		paymentPeriodScrollPane = new JScrollPane();
-		paymentPeriodScrollPane.setViewportBorder(null);
-		GridBagConstraints gbc_oldPaymentPeriodScrollPane = new GridBagConstraints();
-		gbc_oldPaymentPeriodScrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_oldPaymentPeriodScrollPane.fill = GridBagConstraints.BOTH;
-		gbc_oldPaymentPeriodScrollPane.gridx = 0;
-		gbc_oldPaymentPeriodScrollPane.gridy = 0;
-		innerPanel1.add(paymentPeriodScrollPane, gbc_oldPaymentPeriodScrollPane);
-		
-		paymentPeriodTable = new PaymentPeriodTable();
-		paymentPeriodScrollPane.setViewportView(paymentPeriodTable);
-		
-		summaryLabel = new JLabel("Summary");
-		outerPanel.add(summaryLabel);
-
-		
-		innerPanel2 = new JPanel();
-		outerPanel.add(innerPanel2);
-		GridBagLayout gbl_innerPanel2 = new GridBagLayout();
-		gbl_innerPanel2.columnWidths = new int[]{239, 0};
-		gbl_innerPanel2.rowHeights = new int[]{150, 0};
-		gbl_innerPanel2.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_innerPanel2.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		innerPanel2.setLayout(gbl_innerPanel2);
-		
-		paymentPeriodSummaryScrollPane = new JScrollPane();
-		paymentPeriodSummaryScrollPane.setViewportBorder(null);
-		GridBagConstraints gbc_oldPaymentPeriodSummaryScrollPane = new GridBagConstraints();
-		gbc_oldPaymentPeriodSummaryScrollPane.fill = GridBagConstraints.BOTH;
-		gbc_oldPaymentPeriodSummaryScrollPane.gridx = 0;
-		gbc_oldPaymentPeriodSummaryScrollPane.gridy = 0;
-		innerPanel2.add(paymentPeriodSummaryScrollPane, gbc_oldPaymentPeriodSummaryScrollPane);
-		
-		paymentPeriodSummaryTable = new PaymentPeriodSummaryTable();
-		paymentPeriodSummaryScrollPane.setViewportView(paymentPeriodSummaryTable);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{1176, 0};
+		gridBagLayout.rowHeights = new int[]{166, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		setLayout(gridBagLayout);
+				
+				outerPanel = new JPanel();
+				outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Payment Period X", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				GridBagConstraints gbc_outerPanel = new GridBagConstraints();
+				gbc_outerPanel.fill = GridBagConstraints.BOTH;
+				gbc_outerPanel.gridx = 0;
+				gbc_outerPanel.gridy = 0;
+				add(outerPanel, gbc_outerPanel);
+				GridBagLayout gbl_outerPanel = new GridBagLayout();
+				gbl_outerPanel.columnWidths = new int[]{1166, 0};
+				gbl_outerPanel.rowHeights = new int[]{16, 55, 16, 55, 0};
+				gbl_outerPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+				gbl_outerPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+				outerPanel.setLayout(gbl_outerPanel);
+				
+				accountsLabel = new JLabel("Accounts");
+				GridBagConstraints gbc_accountsLabel = new GridBagConstraints();
+				gbc_accountsLabel.fill = GridBagConstraints.HORIZONTAL;
+				gbc_accountsLabel.insets = new Insets(0, 0, 5, 0);
+				gbc_accountsLabel.gridx = 0;
+				gbc_accountsLabel.gridy = 0;
+				outerPanel.add(accountsLabel, gbc_accountsLabel);
+				
+				innerPanel1 = new JPanel();
+				GridBagConstraints gbc_innerPanel1 = new GridBagConstraints();
+				gbc_innerPanel1.fill = GridBagConstraints.BOTH;
+				gbc_innerPanel1.insets = new Insets(0, 0, 5, 0);
+				gbc_innerPanel1.gridx = 0;
+				gbc_innerPanel1.gridy = 1;
+				outerPanel.add(innerPanel1, gbc_innerPanel1);
+				innerPanel1.setLayout(new BoxLayout(innerPanel1, BoxLayout.X_AXIS));
+				
+				paymentPeriodScrollPane = new JScrollPane();
+				paymentPeriodScrollPane.setViewportBorder(null);
+				innerPanel1.add(paymentPeriodScrollPane);
+				
+				paymentPeriodTable = new PaymentPeriodTable();
+				paymentPeriodScrollPane.setViewportView(paymentPeriodTable);
+				
+				summaryLabel = new JLabel("Summary");
+				GridBagConstraints gbc_summaryLabel = new GridBagConstraints();
+				gbc_summaryLabel.fill = GridBagConstraints.HORIZONTAL;
+				gbc_summaryLabel.insets = new Insets(0, 0, 5, 0);
+				gbc_summaryLabel.gridx = 0;
+				gbc_summaryLabel.gridy = 2;
+				outerPanel.add(summaryLabel, gbc_summaryLabel);
+				
+						
+						innerPanel2 = new JPanel();
+						GridBagConstraints gbc_innerPanel2 = new GridBagConstraints();
+						gbc_innerPanel2.fill = GridBagConstraints.BOTH;
+						gbc_innerPanel2.gridx = 0;
+						gbc_innerPanel2.gridy = 3;
+						outerPanel.add(innerPanel2, gbc_innerPanel2);
+						innerPanel2.setLayout(new BoxLayout(innerPanel2, BoxLayout.X_AXIS));
+						
+						paymentPeriodSummaryScrollPane = new JScrollPane();
+						paymentPeriodSummaryScrollPane.setViewportBorder(null);
+						innerPanel2.add(paymentPeriodSummaryScrollPane);
+						
+						paymentPeriodSummaryTable = new PaymentPeriodSummaryTable();
+						paymentPeriodSummaryScrollPane.setViewportView(paymentPeriodSummaryTable);
 		
 
 	}

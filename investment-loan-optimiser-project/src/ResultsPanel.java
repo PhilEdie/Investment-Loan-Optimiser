@@ -39,7 +39,6 @@ public class ResultsPanel extends JPanel {
 	}
 
 	public void update() {
-		System.out.println("Updated");
 		assert gui.mainProgram.getHistory().size() > 0;
 		this.removeAll();
 		Stack<List<Account>> history = gui.mainProgram.getHistory();
@@ -48,9 +47,9 @@ public class ResultsPanel extends JPanel {
 			List<Account> accounts = history.get(i);
 			PaymentPeriodPanel panel = new PaymentPeriodPanel();
 			if(i == 0) {
-				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Starting Accounts", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Starting Accounts", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
 			} else {
-				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Payment Period " + i, TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Payment Period " + i, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
 			}
 			this.add(panel);
 			
@@ -67,16 +66,22 @@ public class ResultsPanel extends JPanel {
 						Utilities.convertToPercentageFormat((account.getInterestRate() - 1) * 100),
 						Utilities.convertToDollarFormat(account.getPaymentForPeriod()),
 						Utilities.convertToDollarFormat(account.getInterestForPeriod()) });
-
 			}
 			
 			
 			//Change the scroll pane to be only as large as needed.
 			Dimension d = panel.paymentPeriodTable.getPreferredSize();
 			panel.paymentPeriodScrollPane.setPreferredSize(
-			    new Dimension(d.width,panel.paymentPeriodTable.getRowHeight()*accounts.size()));
+			    new Dimension(d.width,panel.paymentPeriodTable.getRowHeight()*(accounts.size() + 2)));
 			
 			//For the payment period summarytable.
+			
+			if(i == 0) {
+				panel.outerPanel.remove(panel.summaryLabel);
+				panel.outerPanel.remove(panel.innerPanel2);
+				panel.revalidate();
+				continue;
+			}
 			
 			//There should only be a change in net worth starting from the first payment period. 
 			String changeInNetWorth = "$0.00";
@@ -95,7 +100,7 @@ public class ResultsPanel extends JPanel {
 			//Change the scroll pane to be only as large as needed.
 			d = panel.paymentPeriodSummaryTable.getPreferredSize();
 			panel.paymentPeriodSummaryScrollPane.setPreferredSize(
-			    new Dimension(d.width,panel.paymentPeriodSummaryTable.getRowHeight()));
+			    new Dimension(d.width,panel.paymentPeriodSummaryTable.getRowHeight() + 1));
 		}
 
 	}
