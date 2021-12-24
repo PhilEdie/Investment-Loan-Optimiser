@@ -18,7 +18,14 @@ public class AccountForm {
 	private boolean validBalance = false;
 
 	private String formattedInterestRate = "0.00%";
-	private double interestRateValue = 1;
+	
+	/* 
+	 * An interest rate value of 1 is equivalent to an actual interest rate of 0,
+	 * since we apply interest by multiplying the balance by the interest rate.
+	 * ie. $100 * 1.25 = $125	(25% interest)
+	 * ie. $100 * 1.00 = $100	(0% interest)
+	 */
+	private double interestRateValue = 1;	
 	private boolean validInterestRate = false;
 
 	
@@ -104,11 +111,6 @@ public class AccountForm {
 	public boolean isValidMinimumPayment() {
 		return validMinimumPayment;
 	}
-	
-	//==============================================
-	//	SETTERS
-	//==============================================
-
 
 
 	public void setName(String name) {
@@ -126,12 +128,20 @@ public class AccountForm {
 	}
 
 
+	/**
+	 * 	Sets the account balance based on the contents of the balanceEntry text field.
+	 *  The balance should always be positive if it is an investment.
+	 *  If the type of account is a loan, the balance will always be considered negative. 
+	 *  If the input isn't valid, default the balance value to zero and set the validBalance flag to false. 
+	 * @param balance	The contents of the balanceEntry text field.
+	 * 
+	 */
 	public void setBalance(String balance) {
-		if(type.equals(Investment.class) && validatePositiveNumber(balance)) {
+		if(type.equals(Investment.class) && Utilities.validatePositiveNumber(balance)) {
 			this.formattedBalance = Utilities.convertToDollarFormat(balance);
 			this.balanceValue = Double.parseDouble(balance);
 			this.validBalance = true;
-		} else if(type.equals(Loan.class) && validateNumber(balance)) {
+		} else if(type.equals(Loan.class) && Utilities.validateNumber(balance)) {
 			this.balanceValue = Math.abs(Double.parseDouble(balance));
 			this.balanceValue *= -1;
 			this.formattedBalance = Utilities.convertToDollarFormat(""+balanceValue);
@@ -144,8 +154,15 @@ public class AccountForm {
 	}
 		
 
+	/**
+	 * Sets the interest rate based on the contents of the interestRateEntry text field. 
+	 * The interest rate should always be positive.
+	 * If the provided string cannot be converted to a double, default the interest rate to 0 and set the
+	 * validInterestRate flag to false. 
+	 * @param interestRate	The contents of the interestRateEntry text field. 
+	 */
 	public void setInterestRate(String interestRate) {
-		if(validatePositiveNumber(interestRate)) {
+		if(Utilities.validatePositiveNumber(interestRate)) {
 			this.formattedInterestRate = Utilities.convertToPercentageFormat(interestRate);
 			this.interestRateValue = 1 + (Double.parseDouble(interestRate)/100);
 			this.validInterestRate = true;
@@ -156,8 +173,15 @@ public class AccountForm {
 		}	
 	}
 	
+	/**
+	 * Sets the minimum payment based on the contents of the minimumPaymentEntry text field. 
+	 * The minimum payment should always be positive.
+	 * If the provided string cannot be converted to a double, default the minimum payment to 0 and set the
+	 * validMinimumPayment flag to false. 
+	 * @param minimumPayment	the contents of the minimumPaymentEntry text field. 
+	 */
 	public void setMinimumPayment(String minimumPayment) {
-		if(validatePositiveNumber(minimumPayment)) {
+		if(Utilities.validatePositiveNumber(minimumPayment)) {
 			this.formattedMinimumPayment = Utilities.convertToDollarFormat(minimumPayment);
 			this.minimumPaymentValue = Double.parseDouble(minimumPayment);
 			this.validMinimumPayment = true;
@@ -168,8 +192,15 @@ public class AccountForm {
 		}
 	}
 	
+	/**
+	 * Sets the income based on the contents of the incomeEntry text field. 
+	 * The income should always be positive.
+	 * If the provided string cannot be converted to a double, default the income to 0 and set the
+	 * validIncome flag to false. 
+	 * @param income	the contents of the incomeEntry text field. 
+	 */
 	public void setIncome(String income) {
-		if(validatePositiveNumber(income)) {
+		if(Utilities.validatePositiveNumber(income)) {
 			this.formattedAvailableFunds = Utilities.convertToDollarFormat(income);
 			this.availableFundsValue = Double.parseDouble(income);
 			this.validAvailableFunds = true;
@@ -181,20 +212,31 @@ public class AccountForm {
 	}
 	
 
+	/**
+	 * Sets the total periods based on the contents of the totalPeriodsEntry text field. 
+	 * The total periods should should always be greater than 0. 
+	 * If the provided string cannot be converted to an integer, default the total periods to 1 and set the
+	 * validTotalPeriods flag to false. 
+	 * @param income	the contents of the totalPeriodsEntry text field. 
+	 */
 	public void setTotalPeriods(String periods) {
 		System.out.println("Periods: " + periods);
-		if(validatePositiveNumber(periods) && Integer.parseInt(periods) != 0) {
-			System.out.println("Reached1");
+		if(Utilities.validatePositiveNumber(periods) && Integer.parseInt(periods) != 0) {
 			this.totalPeriods = Integer.parseInt(periods);
 			this.validTotalPeriods = true;
 		} else {
-			System.out.println("Reached2");
 			this.totalPeriods = 1;
 			this.validTotalPeriods = false;
 		}
 	}
 	
 
+	/**
+	 * Check all fields to see if they are valid.
+	 * This is useful when we are creating instances of the Account class from the information
+	 * stored in the AccountForm object. 
+	 * @return	True if all relevant fields are valid. False if any relevant field is invalid. 
+	 */
 	public boolean validateEntriesBeforeAdd() {
 		if(type.equals(Investment.class)) {
 			return validName && validBalance && validInterestRate;
@@ -202,30 +244,15 @@ public class AccountForm {
 		return validName && validBalance && validInterestRate && validMinimumPayment;
 	}
 	
+	/**
+	 * Check to ensure valid available funds and total periods values are provided.
+	 * @return True if both are valid, false if either are invalid. 
+	 */
 	public boolean validateEntriesBeforeConfirm() {
 		return validAvailableFunds && validTotalPeriods;
 	}
 
-	public boolean validateNumber(String text) {
-		try {
-			double i = Double.parseDouble(text);
-		} catch (NumberFormatException e) {
-			return false;
-		}
-		return true;
-	}
 	
-	public boolean validatePositiveNumber(String text) {
-		try {
-			double i = Double.parseDouble(text);
-			if(i < 0) {
-				return false;
-			}
-		} catch (NumberFormatException e) {
-			return false;
-		}
-		return true;
-	}
 	
 	
 	

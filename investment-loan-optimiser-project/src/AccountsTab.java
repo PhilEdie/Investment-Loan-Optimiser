@@ -28,7 +28,6 @@ public class AccountsTab extends JPanel {
 	private GUI gui;
 
 	private Locale locale = Locale.US;
-	private NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(locale);
 
 	private JFormattedTextField nameEntry;
 	private JLabel typeLabel;
@@ -628,6 +627,10 @@ public class AccountsTab extends JPanel {
 
 	}
 
+	/**
+	 * Uses the information stored in the AccountForm to return a new Account object. 
+	 * @return	A new Account object. 
+	 */
 	public Account createAccountFromForm() {
 		if (gui.form.getType().equals(Investment.class)) {
 			return new Investment(gui.form.getName(), gui.form.getInterestRateValue(), gui.form.getBalanceValue());
@@ -646,6 +649,9 @@ public class AccountsTab extends JPanel {
 		updateTable();
 	}
 	
+	/**
+	 * Clears all invalid field messages.
+	 */
 	public void resetInvalidLabels() {
 		nameInvalid.setText("");
 		minPaymentInvalid.setText("");
@@ -656,6 +662,9 @@ public class AccountsTab extends JPanel {
 	}
 	
 	
+	/**
+	 * Clears the entry fields. Sets the nameEntry field to be a default value. eg: Loan1.
+	 */
 	public void resetEntryFields() {
 		nameEntry.setText(gui.mainProgram.getDefaultAccountName(gui.form.getType()));
 		minPaymentEntry.setText("");
@@ -663,6 +672,9 @@ public class AccountsTab extends JPanel {
 		balanceEntry.setText("");
 	}
 
+	/**
+	 * Sets the invalid text fields to show when a text field is empty.
+	 */
 	public void showBlankFields() {
 		if (nameEntry.getText().isEmpty()) {
 			nameInvalid.setText("Please enter account name.");
@@ -681,6 +693,9 @@ public class AccountsTab extends JPanel {
 		}
 	}
 
+	/**
+	 * Sets the results fields to be what is stored in the AccountForm. 
+	 */
 	public void updateResultsFields() {
 		nameResult.setText(gui.form.getName());
 		minPaymentResult.setText(gui.form.getFormattedMinimumPayment());
@@ -692,6 +707,9 @@ public class AccountsTab extends JPanel {
 	
 	
 
+	/**
+	 * Shows "Invalid" message for each field which is currently invalid. 
+	 */
 	public void showInvalidFields() {
 	
 		if (!nameEntry.getText().isEmpty() && !gui.form.isValidName()) {
@@ -725,6 +743,10 @@ public class AccountsTab extends JPanel {
 		}
 	}
 
+	/**
+	 * Replaces the contents of the accounts table with current information.
+	 * Displays account information stored within mainProgram's list of accounts.
+	 */
 	public void updateTable() {
 		// clear table
 		DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();

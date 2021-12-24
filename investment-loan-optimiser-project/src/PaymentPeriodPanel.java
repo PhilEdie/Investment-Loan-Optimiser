@@ -16,15 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class PaymentPeriodPanel extends JPanel {
-	public PaymentPeriodTable paymentPeriodTable;
-	public PaymentPeriodSummaryTable paymentPeriodSummaryTable;
-	public JScrollPane paymentPeriodScrollPane;
-	public JScrollPane paymentPeriodSummaryScrollPane;
-	public JPanel outerPanel;
-	public JLabel accountsLabel;
-	public JLabel summaryLabel;
-	public JPanel innerPanel1;
-	public JPanel innerPanel2;
+	public final PaymentPeriodTable paymentPeriodTable;
+	public final PaymentPeriodSummaryTable paymentPeriodSummaryTable;
+	public final JScrollPane paymentPeriodScrollPane;
+	public final JScrollPane paymentPeriodSummaryScrollPane;
+	public final JPanel outerPanel;
+	public final JLabel accountsLabel;
+	public final JLabel summaryLabel;
+	public final JPanel innerPanel1;
+	public final JPanel innerPanel2;
 	
 	
 	public PaymentPeriodPanel() {

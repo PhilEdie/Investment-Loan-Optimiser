@@ -1,5 +1,10 @@
 import java.util.*;
 
+/**
+ * Investment objects are accounts where the balance is always positive. 
+ * @author Phil Edie
+ *
+ */
 public class Investment extends Account {
 
 
@@ -15,6 +20,12 @@ public class Investment extends Account {
 	@Override
 	public String toString() {
 		return getAccountName() + "[interestRate=" + getInterestRate() + ", balance=$" + String.format("%.2f", getBalance()) + "]";
+	}
+	
+	@Override
+	public void setBalance(double balance) {
+		assert balance >= 0;
+		super.setBalance(balance);
 	}
 	
 	@Override

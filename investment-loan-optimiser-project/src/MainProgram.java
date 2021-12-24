@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 public class MainProgram {
 
 	private List<Account> startingAccounts = new ArrayList<Account>();
+	/*
+	 * The history stack stores the state of each Account object in each payment period. 
+	 */
 	private Stack<List<Account>> history = new Stack<List<Account>>();
 
 	public MainProgram() {
@@ -27,11 +30,29 @@ public class MainProgram {
 		}
 	}
 
+	/**
+	 * Represents the steps taken within one payment period.
+	 * Steps:
+	 * 1. Create a copy of the previous payment period, we will be updating these.
+	 * 2. Remove all paid off loans.
+	 * 3. Sort the payment period so that higher priority accounts will be paid first. 
+	 * 4. Pay the minimums on each of the Loan obejcts.
+	 * 5. Pay the remaining available funds into the highest priority account,
+	 * 	  continue down the list until no funds remain.
+	 * 6. Apply interest to all accounts. 
+	 * 
+	 * Once the payment period is complete, a new list of accounts is added to the 
+	 * top of the history stack. 
+	 * 
+	 * @param history	
+	 * @param availableFunds
+	 */
 	public void runOnce(Stack<List<Account>> history, double availableFunds) {
+		
+		//
 		if(history.peek().isEmpty()) {
 			return;
 		}
-		//assert !history.peek().isEmpty();
 		
 		assert availableFunds > 0;
 		double remainingIncome = availableFunds;

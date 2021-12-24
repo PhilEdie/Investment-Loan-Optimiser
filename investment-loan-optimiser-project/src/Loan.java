@@ -1,5 +1,12 @@
 import java.util.*;
 
+/**
+ * 	A Loan object includes a minimum payment field.
+ *	Loan objects should always have a balance less than or equal to 0. 		
+ * 	
+ * 	@author Phil Edie
+ *
+ */
 public class Loan extends Account {
 
 	private double minimumPayment;
@@ -44,6 +51,12 @@ public class Loan extends Account {
 			setBalance(getBalance() + payment);			
 			return 0.0;
 		}
+	}
+	
+	@Override
+	public void setBalance(double balance) {
+		assert balance <= 0;
+		super.setBalance(balance);
 	}
 
 	public double makeMinimumPayment() {

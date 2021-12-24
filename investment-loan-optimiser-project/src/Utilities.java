@@ -107,5 +107,26 @@ public class Utilities {
 	public static String convertToPercentageFormat(double interestRate) {
 		return String.format("%.2f", interestRate) + "%";
 	}
+	
+	public static boolean validateNumber(String text) {
+		try {
+			double i = Double.parseDouble(text);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean validatePositiveNumber(String text) {
+		try {
+			double i = Double.parseDouble(text);
+			if(i < 0) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
 
 }

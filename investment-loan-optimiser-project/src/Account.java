@@ -7,7 +7,7 @@ public abstract class Account implements Comparable<Account>{
 	private String accountName;
 	private double balance;
 	private double interestRate;
-	private double interestForPeriod = 0;
+	private double interestForPeriod = 0;	
 	private double paymentForPeriod = 0;
 
 	
@@ -41,12 +41,13 @@ public abstract class Account implements Comparable<Account>{
 		return this.paymentForPeriod;
 	}
 
-	protected void setBalance(double newBalance) {
+	public void setBalance(double newBalance) {
 		this.balance = newBalance;
 	}
 	
 
 	public void setPaymentForPeriod(double paymentForPeriod) {
+		assert paymentForPeriod >= 0;
 		this.paymentForPeriod = paymentForPeriod;
 	}
 

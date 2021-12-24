@@ -47,9 +47,9 @@ public class ResultsPanel extends JPanel {
 			List<Account> accounts = history.get(i);
 			PaymentPeriodPanel panel = new PaymentPeriodPanel();
 			if(i == 0) {
-				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Starting Accounts", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(10, 10, 10)), "Starting Accounts", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
 			} else {
-				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Payment Period " + i, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(10, 10, 10)), "Payment Period " + i, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
 			}
 			this.add(panel);
 			
