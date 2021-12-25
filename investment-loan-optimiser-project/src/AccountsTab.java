@@ -23,6 +23,14 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+/**
+ * Represents the accounts page within the GUI.
+ * Users can enter account information. The information is validated
+ * before new accounts are created.
+ * 
+ * @author Phil Edie
+ *
+ */
 public class AccountsTab extends JPanel {
 
 	private GUI gui;
@@ -371,7 +379,7 @@ public class AccountsTab extends JPanel {
 		addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (gui.mainProgram.hasAccountWithName(gui.form.getName())) {
+				if (gui.mainProgram.containsAccountWithName(gui.form.getName())) {
 					addInvalid.setText("Account with name \"" + gui.form.getName() + "\" already exists.");
 				} else if (!gui.form.validateEntriesBeforeAdd()) {
 					addInvalid.setText("Please complete all fields.");

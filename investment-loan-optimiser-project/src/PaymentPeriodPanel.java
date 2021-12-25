@@ -36,7 +36,7 @@ public class PaymentPeriodPanel extends JPanel {
 		setLayout(gridBagLayout);
 				
 				outerPanel = new JPanel();
-				outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Payment Period X", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(230, 230, 230)), "Payment Period X", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(230, 230, 230)));
 				GridBagConstraints gbc_outerPanel = new GridBagConstraints();
 				gbc_outerPanel.fill = GridBagConstraints.BOTH;
 				gbc_outerPanel.gridx = 0;

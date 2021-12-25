@@ -12,10 +12,16 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 
+/**
+ * Manages the overall structure of the GUI.
+ * 
+ * @author Phil Edie
+ *
+ */
 public class GUI {
 	
 	public AccountForm form;
-	public MainProgram mainProgram;
+	public AccountManager mainProgram;
 	public JFrame frmLoanInvestment;
 	public JTabbedPane tabbedPane;
 	
@@ -46,7 +52,7 @@ public class GUI {
 	 */
 	public GUI() {
 		form = new AccountForm();
-		mainProgram = new MainProgram();
+		mainProgram = new AccountManager();
 		initialize();
 
 	}

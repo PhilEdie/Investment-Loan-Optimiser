@@ -14,6 +14,14 @@ import javax.swing.BoxLayout;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Insets;
 
+/**
+ * Represents the results page within the GUI.
+ * When a user enters account information, the history of payment periods 
+ * is shown within the results page. 
+ * 
+ * @author Phil Edie
+ *
+ */
 public class ResultsTab extends JPanel {
 
 	private GUI gui;

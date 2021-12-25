@@ -85,7 +85,7 @@ class Tests {
 	void accumulatingInterest() {
 		
 		List<Account> accounts = new ArrayList<Account>();
-		MainProgram p = new MainProgram();
+		AccountManager p = new AccountManager();
 		p.addAccount(new Loan("Loan 1", 1.05, -1000, 100));
 		p.run(1, 100);
 		assertEquals(-945, p.getHistory().peek().get(0).getBalance());
@@ -96,7 +96,7 @@ class Tests {
 	void distributeAcrossLoans1() {
 		
 		List<Account> accounts = new ArrayList<Account>();
-		MainProgram p = new MainProgram();
+		AccountManager p = new AccountManager();
 		p.addAccount(new Loan("Loan 1", 1.05, -200, 100));
 		p.addAccount(new Loan("Loan 2", 1.05, -200, 100));
 		p.addAccount(new Investment("Investment 1", 1.05, 0));
@@ -117,7 +117,7 @@ class Tests {
 	void distributeAcrossLoans2() {
 		
 		List<Account> accounts = new ArrayList<Account>();
-		MainProgram p = new MainProgram();
+		AccountManager p = new AccountManager();
 		p.addAccount(new Loan("Loan 1", 1.05, -200, 100));
 		p.addAccount(new Loan("Loan 2", 1.05, -200, 100));
 		p.addAccount(new Investment("Investment 1", 1.05, 0));

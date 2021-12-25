@@ -7,7 +7,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainProgram {
+/**
+ * Contains information on each account.
+ * Responsible for applying payment period operations to each account, then
+ * keeps a history of all payment periods.
+ * 
+ * @author Phil Edie
+ *
+ */
+public class AccountManager {
 
 	private List<Account> startingAccounts = new ArrayList<Account>();
 	/*
@@ -15,9 +23,14 @@ public class MainProgram {
 	 */
 	private Stack<List<Account>> history = new Stack<List<Account>>();
 
-	public MainProgram() {
+	public AccountManager() {
 	}
 
+	/**
+	 * Calls runOnce() for a given number of iterations. 
+	 * @param totalIterations	The number of times to call runOnce()
+	 * @param availableFunds	The total amount of funds to distribute within each payment period. 
+	 */
 	public void run(int totalIterations, double availableFunds) {
 		assert totalIterations > 0;
 		assert !this.startingAccounts.isEmpty();
@@ -49,7 +62,6 @@ public class MainProgram {
 	 */
 	public void runOnce(Stack<List<Account>> history, double availableFunds) {
 		
-		//
 		if(history.peek().isEmpty()) {
 			return;
 		}
@@ -99,25 +111,36 @@ public class MainProgram {
 		history.add(accounts);
 	}
 
+	/**
+	 * Loops through each account, pays the minimum payment for each loan within the list.
+	 * Returns the remaining funds. 
+	 * @param accounts			List of accounts to pay.
+	 * @param availableFunds	The pool of funds which is used to pay the minimum payments.	
+	 * @return					The remaining funds after all minimum payments are paid.
+	 */
 	public double payMinimumsOnLoans(List<Account> accounts, double availableFunds) {
 		assert availableFunds > 0;
-		double incomeAfterMinimums = availableFunds;
+		double remainingFunds = availableFunds;
 		for (Account account : accounts) {
 			if (account instanceof Loan && !((Loan) account).isPaidOff()) {
 				Loan loan = (Loan) account;
 				double change = loan.makeMinimumPayment();
-				incomeAfterMinimums = incomeAfterMinimums - loan.getMinimumPayment() + change;
+				remainingFunds = remainingFunds - loan.getMinimumPayment() + change;
 			}
 		}
 
 		// There should still be some money left over to invest after all minimum
 		// payments.
-		assert incomeAfterMinimums >= 0;
+		assert remainingFunds >= 0;
 
-		return incomeAfterMinimums;
+		return remainingFunds;
 
 	}
 
+	/**
+	 * Loops through each account in the list and calls applyInterest().
+	 * @param accounts	The accounts to call applyInterest() on. 
+	 */
 	public void applyInterestToAll(List<Account> accounts) {
 		for (Account account : accounts) {
 			account.applyInterest();
@@ -177,15 +200,11 @@ public class MainProgram {
 		return startingAccounts.remove(toRemove);
 	}
 
-	public boolean hasAccountWithName(String name) {
-		for (Account account : startingAccounts) {
-			if (account.getAccountName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
+	/**
+	 * Calculate the sum of all minimum payments within startingAccounts.
+	 * @return	The sum. 
+	 */
 	public double getTotalMinimumPayments() {
 		assert this.startingAccounts.size() > 0;
 		double sum = 0;
@@ -199,6 +218,12 @@ public class MainProgram {
 
 	
 
+	/**
+	 * Searches startingAccounts for an account matching the given name.
+	 * removes the matching account. 
+	 * @param accountName	The account to search for. 
+	 * @return				True if an account is successfully removed, false if not. 
+	 */
 	public boolean removeAccount(String accountName) {
 		for (Account account : startingAccounts) {
 			if (account.getAccountName().equals(accountName)) {
@@ -209,6 +234,11 @@ public class MainProgram {
 		return false;
 	}
 	
+	/**
+	 * Checks startingAccounts to see if an account with the provided name exists.
+	 * @param accountName	The name to search for.
+	 * @return				True if an account exists, false if not. 
+	 */
 	public boolean containsAccountWithName(String accountName) {
 		for (Account account : startingAccounts) {
 			if (account.getAccountName().equals(accountName)) {
@@ -218,9 +248,19 @@ public class MainProgram {
 		return false;
 	}
 	
-	public String getDefaultAccountName(Class<? extends Account> class1) {
-		String name = class1.getSimpleName();
-		int suffix = 1;
+	/**
+	 * Returns unique default account name depending on the provided type.
+	 * Eg: "Loan1", or "Investment1".
+	 * 
+	 * @param type	The type of account.
+	 * @return		A unique account name. 
+	 */
+	public String getDefaultAccountName(Class<? extends Account> type) {
+		String name = type.getSimpleName();	//Either "Loan" or "Investment".
+		int suffix = 1;	//The number following the account name. 
+		
+		//If an account with that default name already exists,
+		//increase the suffix by one. 
 		while(containsAccountWithName(name + suffix)) {
 			suffix++; 
 		}
