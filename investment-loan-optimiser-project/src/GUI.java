@@ -21,7 +21,7 @@ import javax.swing.BoxLayout;
 public class GUI {
 	
 	public AccountForm form;
-	public AccountManager mainProgram;
+	public AccountManager accountManager;
 	public JFrame frmLoanInvestment;
 	public JTabbedPane tabbedPane;
 	
@@ -52,7 +52,7 @@ public class GUI {
 	 */
 	public GUI() {
 		form = new AccountForm();
-		mainProgram = new AccountManager();
+		accountManager = new AccountManager();
 		initialize();
 
 	}

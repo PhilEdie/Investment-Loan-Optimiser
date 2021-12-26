@@ -22,10 +22,22 @@ import javax.swing.border.TitledBorder;
 import java.awt.Color;
 import java.awt.Component;
 
+
+/**
+ * Manages a list of PaymentPeriodPanels. Each PaymentPeriodPanel is represented vertically in
+ * order.
+ * 
+ * Since no payments or interest is applied to PaymentPeriod 0, only the PaymentPeriodTable is displayed. 
+ * 
+ * 
+ * @author Phil Edie
+ *
+ */
 public class ResultsPanel extends JPanel {
 
 	private GUI gui;
 	List<PaymentPeriodPanel> childPanels = new ArrayList<PaymentPeriodPanel>();
+
 
 	public ResultsPanel(GUI gui) {
 
@@ -38,18 +50,25 @@ public class ResultsPanel extends JPanel {
 		add(lblNewLabel);
 	}
 
+	
+	/**
+	 * Creates a list of PaymentPeriodPanels from the information stored in the account manager.
+	 * Displays the list of PaymentPeriodPanels in order. 
+	 * 
+	 * The first PaymentPeriodPanel only contains a PaymentPeriodTable. 
+	 */
 	public void update() {
-		assert gui.mainProgram.getHistory().size() > 0;
+		assert gui.accountManager.getHistory().size() > 0;
 		this.removeAll();
-		Stack<List<Account>> history = gui.mainProgram.getHistory();
+		Stack<List<Account>> history = gui.accountManager.getHistory();
 
 		for (int i = 0; i < history.size(); i++) {
 			List<Account> accounts = history.get(i);
 			PaymentPeriodPanel panel = new PaymentPeriodPanel();
 			if(i == 0) {
-				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(220, 220, 220)), "Starting Accounts", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				panel.outerPanelLabel.setText("Accounts Summary");
 			} else {
-				panel.outerPanel.setBorder(new TitledBorder(new LineBorder(new Color(220, 220, 220)), "Payment Period " + i, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
+				panel.outerPanelLabel.setText("Payment Period " + i);
 			}
 			this.add(panel);
 			
@@ -74,11 +93,16 @@ public class ResultsPanel extends JPanel {
 			panel.paymentPeriodScrollPane.setPreferredSize(
 			    new Dimension(d.width,panel.paymentPeriodTable.getRowHeight()*(accounts.size() + 2)));
 			
-			//For the payment period summarytable.
+			//For the payment period summarytable. We don't need as much information since no interest or payments are made.
 			
 			if(i == 0) {
 				panel.outerPanel.remove(panel.summaryLabel);
 				panel.outerPanel.remove(panel.innerPanel2);
+				
+				panel.paymentPeriodTable.removeColumn(panel.paymentPeriodTable.getColumnModel().getColumn(5));
+				panel.paymentPeriodTable.removeColumn(panel.paymentPeriodTable.getColumnModel().getColumn(4));
+				
+				
 				panel.revalidate();
 				continue;
 			}

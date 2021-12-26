@@ -379,13 +379,13 @@ public class AccountsTab extends JPanel {
 		addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (gui.mainProgram.containsAccountWithName(gui.form.getName())) {
+				if (gui.accountManager.containsAccountWithName(gui.form.getName())) {
 					addInvalid.setText("Account with name \"" + gui.form.getName() + "\" already exists.");
 				} else if (!gui.form.validateEntriesBeforeAdd()) {
 					addInvalid.setText("Please complete all fields.");
 					showBlankFields();
 				} else {
-					gui.mainProgram.addAccount(createAccountFromForm());
+					gui.accountManager.addAccount(createAccountFromForm());
 					resetEntryFields();
 					update();
 				}
@@ -487,19 +487,19 @@ public class AccountsTab extends JPanel {
 		confirmButton = new JButton("Confirm");
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (gui.mainProgram.getStartingAccounts().size() == 0) {
+				if (gui.accountManager.getStartingAccounts().size() == 0) {
 					confirmInvalid.setText("Please enter at least one account.");
 					return;
 				} else if (!gui.form.validateEntriesBeforeConfirm()) {
 					confirmInvalid.setText("Please complete all fields.");
 					return;
-				} else if(gui.form.getIncomeValue() < gui.mainProgram.getTotalMinimumPayments()) {
+				} else if(gui.form.getIncomeValue() < gui.accountManager.getTotalMinimumPayments()) {
 					confirmInvalid.setText("Insufficient income to cover minimum payments of "
-				+ Utilities.convertToDollarFormat(gui.mainProgram.getTotalMinimumPayments()));
+				+ Utilities.convertToDollarFormat(gui.accountManager.getTotalMinimumPayments()));
 					return;
 				}
 				confirmInvalid.setText("");
-				gui.mainProgram.run(gui.form.getTotalPeriods(), gui.form.getIncomeValue());
+				gui.accountManager.run(gui.form.getTotalPeriods(), gui.form.getIncomeValue());
 				gui.tabbedPane.setSelectedIndex(1);
 				gui.resultsTab.update();
 			}
@@ -562,7 +562,7 @@ public class AccountsTab extends JPanel {
 				DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
 				String accountName = (String) model.getValueAt(row, 0);
 				model.removeRow(row);
-				gui.mainProgram.removeAccount(accountName);
+				gui.accountManager.removeAccount(accountName);
 			}
 		});
 
@@ -616,7 +616,7 @@ public class AccountsTab extends JPanel {
 					gui.form.setMinimumPayment(minPaymentEntry.getText());
 					gui.form.setBalance(balanceEntry.getText());
 					if(nameEntry.getText().isBlank()|| Utilities.isDefaultName(nameEntry.getText())) {
-						nameEntry.setText(gui.mainProgram.getDefaultAccountName(Loan.class));
+						nameEntry.setText(gui.accountManager.getDefaultAccountName(Loan.class));
 					}
 					
 					update();
@@ -626,7 +626,7 @@ public class AccountsTab extends JPanel {
 					gui.form.setMinimumPayment("0");
 					gui.form.setBalance(balanceEntry.getText());
 					if(nameEntry.getText().isBlank() || Utilities.isDefaultName(nameEntry.getText())) {
-						nameEntry.setText(gui.mainProgram.getDefaultAccountName(Investment.class));
+						nameEntry.setText(gui.accountManager.getDefaultAccountName(Investment.class));
 					}
 					update();
 				}
@@ -674,7 +674,7 @@ public class AccountsTab extends JPanel {
 	 * Clears the entry fields. Sets the nameEntry field to be a default value. eg: Loan1.
 	 */
 	public void resetEntryFields() {
-		nameEntry.setText(gui.mainProgram.getDefaultAccountName(gui.form.getType()));
+		nameEntry.setText(gui.accountManager.getDefaultAccountName(gui.form.getType()));
 		minPaymentEntry.setText("");
 		interestRateEntry.setText("");
 		balanceEntry.setText("");
@@ -760,7 +760,7 @@ public class AccountsTab extends JPanel {
 		DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
 		model.setRowCount(0);
 
-		for (Account account : gui.mainProgram.getStartingAccounts()) {
+		for (Account account : gui.accountManager.getStartingAccounts()) {
 
 			if (account instanceof Investment) {
 				model.addRow(new Object[] { account.getAccountName(), account.getClass().getSimpleName(),

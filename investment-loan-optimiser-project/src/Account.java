@@ -1,8 +1,6 @@
 import java.util.*;
 
 public abstract class Account implements Comparable<Account>{
-
-
 	
 	private String accountName;
 	private double balance;

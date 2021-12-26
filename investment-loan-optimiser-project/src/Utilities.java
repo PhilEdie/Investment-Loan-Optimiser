@@ -5,6 +5,12 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A selection of static methods useful across many classes.
+ * 
+ * @author Phil Edie
+ *
+ */
 public class Utilities {
 
 	/**
