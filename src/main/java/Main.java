@@ -1,3 +1,4 @@
+import View.GUI;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import javax.swing.*;
