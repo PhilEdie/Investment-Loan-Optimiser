@@ -1,7 +1,7 @@
 package View;
 
 import Controller.AccountController;
-import Model.AccountForm;
+import Controller.AccountForm;
 
 import javax.swing.*;
 import java.awt.*;

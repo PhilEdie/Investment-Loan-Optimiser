@@ -625,7 +625,7 @@ public class AccountsTab extends JPanel {
 	}
 
 	/**
-	 * Uses the information stored in the Model.AccountForm to return a new Model.Account object.
+	 * Uses the information stored in the Controller.AccountForm to return a new Model.Account object.
 	 * @return	A new Model.Account object.
 	 */
 	public Account createAccountFromForm() {
@@ -691,7 +691,7 @@ public class AccountsTab extends JPanel {
 	}
 
 	/**
-	 * Sets the results fields to be what is stored in the Model.AccountForm.
+	 * Sets the results fields to be what is stored in the Controller.AccountForm.
 	 */
 	public void updateResultsFields() {
 		nameResult.setText(gui.form.getName());

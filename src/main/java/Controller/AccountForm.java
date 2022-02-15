@@ -1,6 +1,8 @@
-package Model;
+package Controller;
 
-import Controller.Utilities;
+import Model.Account;
+import Model.Investment;
+import Model.Loan;
 
 public class AccountForm {
 
@@ -230,7 +232,7 @@ public class AccountForm {
 	/**
 	 * Check all fields to see if they are valid.
 	 * This is useful when we are creating instances of the Model.Account class from the information
-	 * stored in the Model.AccountForm object.
+	 * stored in the Controller.AccountForm object.
 	 * @return	True if all relevant fields are valid. False if any relevant field is invalid. 
 	 */
 	public boolean validateEntriesBeforeAdd() {

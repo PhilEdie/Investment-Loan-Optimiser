@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class AccountsModel {
-
+public class AccountsModel  {
 
     private final List<Account> startingAccounts = new ArrayList<Account>();
     /*
@@ -13,7 +12,8 @@ public class AccountsModel {
      */
     private Stack<List<Account>> history = new Stack<List<Account>>();
 
-    public AccountsModel(){}
+    public AccountsModel(){
+    }
 
     public List<Account> getStartingAccounts() {
         return startingAccounts;

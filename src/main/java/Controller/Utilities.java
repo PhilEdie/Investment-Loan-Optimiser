@@ -7,8 +7,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A selection of static methods useful across many classes.
@@ -23,12 +21,10 @@ public class Utilities {
 	 * eg: "Loan1", "Investment10".
 	 *
 	 * @param name		Name to check.
-	 * @return			True if all accounts are loans, false if not.
+	 * @return			True if provided name is a default name.
 	 */
 	public static boolean isDefaultName(String name) {
-		Pattern toMatch = Pattern.compile("[Loan\\|Investment]+\\d");
-		Matcher matcher = toMatch.matcher(name);
-		return matcher.find();
+		return name.matches("(Loan|Investment)(\\d)+");
 	}
 
 	/**

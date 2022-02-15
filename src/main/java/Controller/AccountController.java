@@ -34,9 +34,16 @@ public class AccountController {
 	 * @param availableFunds	The total amount of funds to distribute within each payment period. 
 	 */
 	public void run(int totalIterations, double availableFunds) {
-		assert totalIterations > 0;
-		assert !accountsModel.getStartingAccounts().isEmpty();
-		assert availableFunds > 0;
+		if(totalIterations <= 0){
+			throw new IllegalArgumentException("Error. totalIterations should be greater than 0.");
+		}
+		if(accountsModel.getStartingAccounts().isEmpty()){
+			throw new IllegalStateException("Error. Starting accounts should not be empty.");
+		}
+
+		if(availableFunds <= 0){
+			throw new IllegalArgumentException("Error. availableFunds should be greater than 0.");
+		}
 
 		accountsModel.clearHistory();
 		accountsModel.addToHistory(accountsModel.getStartingAccounts());
@@ -64,11 +71,13 @@ public class AccountController {
 	 */
 	public void runOnce(Stack<List<Account>> history, double availableFunds) {
 
-		if(history.peek().isEmpty()) {
-			return;
+		if(availableFunds <= 0){
+			throw new IllegalArgumentException("Error. availableFunds should be greater than 0.");
 		}
-		
-		assert availableFunds > 0;
+
+		if(history.peek().isEmpty()) {
+			throw new IllegalArgumentException("Error. availableFunds should be greater than 0.");
+		}
 
 		double remainingIncome = availableFunds;
 		List<Account> accounts = createCopyOfAccounts(history.peek());
@@ -79,12 +88,10 @@ public class AccountController {
 		for(Account account : accounts) {
 			if(account instanceof Loan && ((Loan) account).isPaidOff()) {
 				paidOffLoans.add(account);
-				System.out.println("Found paid off account.");
+
 			}
 		}
-		System.out.println("size before: " + accounts.size());
 		accounts.removeAll(paidOffLoans);
-		System.out.println("size after: " + accounts.size());
 		
 		// Sort accounts so high priority accounts will be paid first.
 		Collections.sort(accounts);
@@ -123,7 +130,10 @@ public class AccountController {
 	 * @return					The remaining funds after all minimum payments are paid.
 	 */
 	public double payMinimumsOnLoans(List<Account> accounts, double availableFunds) {
-		assert availableFunds > 0;
+		if(availableFunds <= 0){
+			throw new IllegalArgumentException("Error. Available funds should be greater than 0.");
+		}
+
 		double remainingFunds = availableFunds;
 		for (Account account : accounts) {
 			if (account instanceof Loan && !((Loan) account).isPaidOff()) {
@@ -135,10 +145,11 @@ public class AccountController {
 
 		// There should still be some money left over to invest after all minimum
 		// payments.
-		assert remainingFunds >= 0;
+		if(remainingFunds < 0){
+			throw new IllegalArgumentException("Error. Remaining funds shouldn't be negative after paying minimums.");
+		}
 
 		return remainingFunds;
-
 	}
 
 	/**
@@ -152,8 +163,11 @@ public class AccountController {
 	}
 
 	public List<Account> createCopyOfAccounts(List<Account> toCopy) {
-		
-		assert !toCopy.isEmpty();
+
+		if(toCopy.isEmpty()){
+			throw new IllegalArgumentException("Error. toCopy shouldn't be empty.");
+		}
+
 		List<Account> copied = new ArrayList<Account>();
 
 		for (Account account : toCopy) {
@@ -172,7 +186,11 @@ public class AccountController {
 	 * @return	The sum. 
 	 */
 	public double getTotalMinimumPayments() {
-		assert accountsModel.getStartingAccounts().size() > 0;
+
+		if(accountsModel.getStartingAccounts().size() == 0){
+			throw new IllegalStateException("Error. accountsModel should have at least one account.");
+		}
+
 		double sum = 0;
 		for (Account account : accountsModel.getStartingAccounts()) {
 			if (account instanceof Loan) {
@@ -187,17 +205,15 @@ public class AccountController {
 	/**
 	 * Searches startingAccounts for an account matching the given name.
 	 * removes the matching account. 
-	 * @param accountName	The account to search for. 
-	 * @return				True if an account is successfully removed, false if not. 
+	 * @param accountName    The account to search for.
 	 */
-	public boolean removeAccount(String accountName) {
+	public void removeAccount(String accountName) {
 		for (Account account : accountsModel.getStartingAccounts()) {
 			if (account.getAccountName().equals(accountName)) {
 				accountsModel.removeStartingAccount(account);
-				return true;
+				return;
 			}
 		}
-		return false;
 	}
 	
 	/**
