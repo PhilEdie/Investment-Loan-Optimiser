@@ -12,7 +12,7 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    UIManager.setLookAndFeel( new FlatIntelliJLaf());
+                    UIManager.setLookAndFeel(new FlatIntelliJLaf());
                     GUI window = new GUI();
                     window.frmLoanInvestment.setVisible(true);
 

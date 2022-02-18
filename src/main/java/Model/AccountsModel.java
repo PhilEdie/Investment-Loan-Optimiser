@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class AccountsModel  {
+public class AccountsModel {
 
     private final List<Account> startingAccounts = new ArrayList<Account>();
     /*
@@ -12,7 +12,7 @@ public class AccountsModel  {
      */
     private Stack<List<Account>> history = new Stack<List<Account>>();
 
-    public AccountsModel(){
+    public AccountsModel() {
     }
 
     public List<Account> getStartingAccounts() {
@@ -23,20 +23,20 @@ public class AccountsModel  {
         return history;
     }
 
-    public void addStartingAccount(Account toAdd){
+    public void addStartingAccount(Account toAdd) {
         this.startingAccounts.add(toAdd);
     }
 
-    public void addToHistory(List<Account> toAdd){
+    public void addToHistory(List<Account> toAdd) {
         this.history.add(toAdd);
     }
 
-    public void clearHistory(){
+    public void clearHistory() {
         this.history = new Stack<List<Account>>();
     }
 
-    public boolean removeStartingAccount(Account toRemove){
-        return this.startingAccounts.remove(toRemove);
+    public void removeStartingAccount(Account toRemove) {
+        this.startingAccounts.remove(toRemove);
     }
 
     public void printHistory() {
