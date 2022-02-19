@@ -93,9 +93,11 @@ class Tests {
     @Test
     void accumulatingInterest() {
         AccountController p = new AccountController();
+        AccountsModel m = p.getAccountsModel();
         p.getAccountsModel().addStartingAccount(new Loan("Loan 1", 1.05, -1000, 100));
         p.run(1, 100);
-        assertEquals(-945, p.getAccountsModel().getHistory().peek().get(0).getBalance());
+        assertEquals(-945, m.getHistory().peek().get(0).getBalance());
+        assertEquals(-45, m.getHistory().peek().get(0).getInterestForPeriod());
     }
 
     @Test
@@ -238,5 +240,87 @@ class Tests {
         assertEquals(1.015, f.getInterestRateValue());
         assertEquals(1.5, f.getIncomeValue());
         assertEquals(1, f.getTotalPeriods());
+    }
+
+    @Test
+    void allLoansPaidOffEarly() {
+        AccountController p = new AccountController();
+        AccountsModel m = p.getAccountsModel();
+        m.addStartingAccount(new Loan("Loan 1", 1.05, -500, 100));
+        m.addStartingAccount(new Loan("Loan 2", 1.05, -500, 100));
+
+        // Testing to ensure it doesn't crash when there are no accounts left to pay into.
+        p.run(10, 500);
+
+        /* History should only contain two lists, the starting loans,
+        and the loans after being paid off.*/
+
+        assertEquals(4, m.getHistory().size());
+    }
+
+    @Test
+    void validatingNumbers() {
+        assertTrue(Utilities.validateNumber("0", 1));
+        assertFalse(Utilities.validateNumber("-100", 10));
+        assertFalse(Utilities.validateNumber("100000000000000000000", 10));
+        assertFalse(Utilities.validateNumber("ten", 10));
+    }
+
+    @Test
+    void stringFormatting() {
+        assertEquals("$1,234.57", Utilities.convertToDollarFormat(1234.5678));
+        assertEquals("12.35%", Utilities.convertToPercentageFormat(12.345678));
+    }
+
+    @Test
+    void ensureAccountBalanceInterestRateAlwaysPositive() {
+        try {
+            new Investment("i", -1, 1);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+
+        }
+    }
+
+    @Test
+    void ensureInvestmentBalanceAlwaysPositive1() {
+        try {
+            new Investment("i", 1, -1);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+
+        }
+    }
+
+    @Test
+    void ensureInvestmentBalanceAlwaysPositive2() {
+        try {
+            Investment inv = new Investment("i", 1, 1);
+            inv.setBalance(-100);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+
+        }
+    }
+
+    @Test
+    void ensureLoanBalanceAlwaysNegative1() {
+        try {
+            new Loan("i", 1, 1, 1);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+
+        }
+    }
+
+    @Test
+    void ensureLoanBalanceAlwaysNegative2() {
+        try {
+            Loan loan = new Loan("i", 1, -1, 1);
+            loan.setBalance(100);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+
+        }
     }
 }

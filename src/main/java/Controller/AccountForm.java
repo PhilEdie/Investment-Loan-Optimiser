@@ -228,7 +228,7 @@ public class AccountForm {
             } else {
                 throw new NumberFormatException();
             }
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.totalPeriods = 1;
             this.validTotalPeriods = false;
         }

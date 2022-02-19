@@ -25,7 +25,9 @@ public class Investment extends Account {
 
     @Override
     public void setBalance(double balance) {
-        assert balance >= 0;
+        if (balance < 0) {
+            throw new IllegalArgumentException("Error, a balance on an Investment object should be greater or equal to 0.");
+        }
         super.setBalance(balance);
     }
 

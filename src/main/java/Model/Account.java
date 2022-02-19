@@ -11,9 +11,13 @@ public abstract class Account implements Comparable<Account> {
 
 
     public Account(String accountName, double interestRate, double balance, int priority) {
+        if (accountName.isBlank()) {
+            throw new IllegalArgumentException("Error. accountName should not be empty.");
+        }
 
-        assert !accountName.isBlank();
-        assert interestRate >= 1;
+        if (interestRate < 1) {
+            throw new IllegalArgumentException("Error, interestRate should be greater or equal to 1.");
+        }
 
         this.accountName = accountName;
         this.interestRate = interestRate;

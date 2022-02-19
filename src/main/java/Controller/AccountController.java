@@ -45,7 +45,14 @@ public class AccountController {
 
         accountsModel.clearHistory();
         accountsModel.addToHistory(accountsModel.getStartingAccounts());
+
+        Stack<List<Account>> history = accountsModel.getHistory();
         for (int i = 0; i < totalIterations; i++) {
+            // Stop if all accounts are loans and paid off.
+            if (Utilities.containsAllLoans(history.peek())
+                    && Utilities.allLoansPaidOff(history.peek())) {
+                break;
+            }
             runOnce(accountsModel.getHistory(), availableFunds);
         }
     }
@@ -64,31 +71,23 @@ public class AccountController {
      * Once the payment period is complete, a new list of accounts is added to the
      * top of the history stack.
      *
-     * @param history   Stores the running results of each payment period in chronological order.
-     * @param availableFunds    The total amount of money to distribute across accounts.
+     * @param history        Stores the running results of each payment period in chronological order.
+     * @param availableFunds The total amount of money to distribute across accounts.
      */
     public void runOnce(Stack<List<Account>> history, double availableFunds) {
+
+        // If all accounts are loans and all loans are paid off, don't continue.
 
         if (availableFunds <= 0) {
             throw new IllegalArgumentException("Error. availableFunds should be greater than 0.");
         }
 
         if (history.peek().isEmpty()) {
-            throw new IllegalArgumentException("Error. availableFunds should be greater than 0.");
+            throw new IllegalArgumentException("Error. history should not be empty.");
         }
 
         double remainingIncome = availableFunds;
         List<Account> accounts = createCopyOfAccounts(history.peek());
-
-        //Remove paid off loans from working list.
-
-        List<Account> paidOffLoans = new ArrayList<>();
-        for (Account account : accounts) {
-            if (account instanceof Loan && ((Loan) account).isPaidOff()) {
-                paidOffLoans.add(account);
-            }
-        }
-        accounts.removeAll(paidOffLoans);
 
         // Sort accounts so high priority accounts will be paid first.
         Collections.sort(accounts);

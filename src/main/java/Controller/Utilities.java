@@ -162,7 +162,7 @@ public class Utilities {
      * Attempts to convert a string to a double, then converts the string back into
      * a percentage format. ("1.00") -> (1.0) -> ("1.00%")
      *
-     * @param interestRate  The string to convert.
+     * @param interestRate The string to convert.
      * @return The converted string.
      */
     public static String convertToPercentageFormat(String interestRate) {
@@ -184,7 +184,7 @@ public class Utilities {
      * Checks to see if the provided String contains a double.
      *
      * @param text The string to check.
-     * @param max The maximum number allowed. Is checked in both directions. eg: -max, +max
+     * @param max  The maximum number allowed. Is checked in both directions. eg: -max, +max
      * @return True if the provided String contains a double.
      */
     public static boolean validateNumber(String text, double max) {
@@ -203,7 +203,7 @@ public class Utilities {
      * Checks to see if the provided String contains a positive double.
      *
      * @param text The string to check.
-     * @param max The maximum number allowed.
+     * @param max  The maximum number allowed.
      * @return True if the provided String contains a positive double.
      */
     public static boolean validatePositiveNumber(String text, double max) {
