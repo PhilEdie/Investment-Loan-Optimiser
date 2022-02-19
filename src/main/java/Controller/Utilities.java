@@ -85,20 +85,6 @@ public class Utilities {
     }
 
     /**
-     * Calculates and returns the sum of interest accumulated within a list of accounts.
-     *
-     * @param accounts Accounts to check.
-     * @return The sum of interest accumulated within a list of accounts in Double format.
-     */
-    public static double getTotalInterest(List<Account> accounts) {
-        double totalInterest = 0;
-        for (Account account : accounts) {
-            totalInterest += account.getInterestForPeriod();
-        }
-        return totalInterest;
-    }
-
-    /**
      * Calculates and returns the sum of interest accumulated within a list of accounts in String format.
      *
      * @param accounts Accounts to check.
@@ -110,19 +96,6 @@ public class Utilities {
             totalInterest += account.getInterestForPeriod();
         }
         return convertToDollarFormat(totalInterest);
-    }
-
-    /**
-     * Returns the difference in net worth between two lists of accounts.
-     *
-     * @param before The previous list of accounts.
-     * @param after  The current list of accounts.
-     * @return Returns the difference in net worth in Double format.
-     */
-    public static double getChangeInNetWorth(List<Account> before, List<Account> after) {
-        double beforeNetWorth = getNetWorth(before);
-        double afterNetWorth = getNetWorth(after);
-        return afterNetWorth - beforeNetWorth;
     }
 
     /**
@@ -148,7 +121,7 @@ public class Utilities {
      * @return A comma separated string with all paid off loan names.
      */
     public static String getPaidOffLoanNames(List<Account> accounts) {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (Account account : accounts) {
             if (account instanceof Loan && ((Loan) account).isPaidOff()) {
                 names.add(account.getAccountName());
@@ -189,7 +162,7 @@ public class Utilities {
      * Attempts to convert a string to a double, then converts the string back into
      * a percentage format. ("1.00") -> (1.0) -> ("1.00%")
      *
-     * @param interestRate
+     * @param interestRate  The string to convert.
      * @return The converted string.
      */
     public static String convertToPercentageFormat(String interestRate) {

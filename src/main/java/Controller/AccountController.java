@@ -64,8 +64,8 @@ public class AccountController {
      * Once the payment period is complete, a new list of accounts is added to the
      * top of the history stack.
      *
-     * @param history
-     * @param availableFunds
+     * @param history   Stores the running results of each payment period in chronological order.
+     * @param availableFunds    The total amount of money to distribute across accounts.
      */
     public void runOnce(Stack<List<Account>> history, double availableFunds) {
 
@@ -82,11 +82,10 @@ public class AccountController {
 
         //Remove paid off loans from working list.
 
-        List<Account> paidOffLoans = new ArrayList<Account>();
+        List<Account> paidOffLoans = new ArrayList<>();
         for (Account account : accounts) {
             if (account instanceof Loan && ((Loan) account).isPaidOff()) {
                 paidOffLoans.add(account);
-
             }
         }
         accounts.removeAll(paidOffLoans);
@@ -168,7 +167,7 @@ public class AccountController {
             throw new IllegalArgumentException("Error. toCopy shouldn't be empty.");
         }
 
-        List<Account> copied = new ArrayList<Account>();
+        List<Account> copied = new ArrayList<>();
 
         for (Account account : toCopy) {
             if (account instanceof Loan) {

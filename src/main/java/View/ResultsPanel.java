@@ -92,10 +92,7 @@ public class ResultsPanel extends JPanel {
             }
 
             //There should only be a change in net worth starting from the first payment period.
-            String changeInNetWorth = "$0.00";
-            if (i > 0) {
-                changeInNetWorth = Utilities.getChangeInNetWorthAsString(history.get(i - 1), accounts);
-            }
+            String changeInNetWorth = Utilities.getChangeInNetWorthAsString(history.get(i - 1), accounts);
 
             model = (DefaultTableModel) panel.paymentPeriodSummaryTable.getModel();
             model.addRow(new Object[]{

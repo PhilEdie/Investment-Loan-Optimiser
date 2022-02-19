@@ -6,11 +6,11 @@ import java.util.Stack;
 
 public class AccountsModel {
 
-    private final List<Account> startingAccounts = new ArrayList<Account>();
+    private final List<Account> startingAccounts = new ArrayList<>();
     /*
      * The history stack stores the state of each Model.Account object in each payment period.
      */
-    private Stack<List<Account>> history = new Stack<List<Account>>();
+    private Stack<List<Account>> history = new Stack<>();
 
     public AccountsModel() {
     }
@@ -32,12 +32,16 @@ public class AccountsModel {
     }
 
     public void clearHistory() {
-        this.history = new Stack<List<Account>>();
+        this.history = new Stack<>();
     }
 
     public void removeStartingAccount(Account toRemove) {
         this.startingAccounts.remove(toRemove);
     }
+
+
+
+    /* Currently unused. Previously used for debugging.
 
     public void printHistory() {
         System.out.println(
@@ -58,5 +62,5 @@ public class AccountsModel {
             System.out.println(
                     "------------------------------------------------------------------------------------------------------");
         }
-    }
+    }*/
 }

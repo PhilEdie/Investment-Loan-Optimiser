@@ -22,6 +22,7 @@ class Tests {
         assertEquals(500.0, leftoverIncome);
         assertEquals(loan.getPaymentForPeriod(), 500);
         assertTrue(loan.isPaidOff());
+
     }
 
     @Test
@@ -35,50 +36,50 @@ class Tests {
 
     @Test
     void sortingAccounts1() {
-        List<Account> toSort = new ArrayList<Account>();
+        List<Account> toSort = new ArrayList<>();
         toSort.add(new Loan("Loan 1", 1.25, -300, 50));
         toSort.add(new Loan("Loan 2", 1.1, -1500, 100));
         toSort.add(new Investment("Investment 1", 1.08, 5000));
         toSort.add(new Investment("Investment 2", 1.04, 20000));
 
-        List<Account> expected = new ArrayList<Account>(toSort);
+        List<Account> expected = new ArrayList<>(toSort);
         Collections.sort(toSort);
         assertEquals(expected, toSort);
     }
 
     @Test
     void sortingAccounts2() {
-        List<Account> toSort = new ArrayList<Account>();
+        List<Account> toSort = new ArrayList<>();
         toSort.add(new Loan("Loan 1", 1.25, -300, 50));
         toSort.add(new Investment("Investment 1", 1.25, 5000));
 
-        List<Account> expected = new ArrayList<Account>(toSort);
+        List<Account> expected = new ArrayList<>(toSort);
         Collections.sort(toSort);
         assertEquals(expected, toSort);
     }
 
     @Test
     void sortingAccounts3() {
-        List<Account> toSort = new ArrayList<Account>();
+        List<Account> toSort = new ArrayList<>();
         toSort.add(new Loan("Loan 1", 1.26, -300, 50));
         toSort.add(new Loan("Loan 2", 1.25, -300, 50));
         toSort.add(new Investment("Investment 1", 1.25, 5000));
 
-        List<Account> expected = new ArrayList<Account>(toSort);
+        List<Account> expected = new ArrayList<>(toSort);
         Collections.sort(toSort);
         assertEquals(expected, toSort);
     }
 
     @Test
     void sortingEqualInterestRateAccounts() {
-        List<Account> toSort = new ArrayList<Account>();
+        List<Account> toSort = new ArrayList<>();
         toSort.add(new Investment("Investment 2", 1.08, 5000));
         toSort.add(new Investment("Investment 1", 1.1, 5000));
         toSort.add(new Loan("Loan 1", 1.1, -10000, 100));
         toSort.add(new Loan("Loan 2", 1.08, -10000, 100));
         Collections.sort(toSort);
 
-        List<Account> expected = new ArrayList<Account>();
+        List<Account> expected = new ArrayList<>();
 
         expected.add(new Loan("Loan 1", 1.1, -10000, 100));
         expected.add(new Investment("Investment 1", 1.1, 5000));
@@ -115,17 +116,7 @@ class Tests {
                         + "Investment 1[interestRate=1.05, balance=$105.00]]",
                 topOfStack.toString()
         );
-    }
-
-    @Test
-    void distributeAcrossLoans2() {
-
-        AccountController p = new AccountController();
-        AccountsModel m = p.getAccountsModel();
-        m.addStartingAccount(new Loan("Loan 1", 1.05, -200, 100));
-        m.addStartingAccount(new Loan("Loan 2", 1.05, -200, 100));
-        m.addStartingAccount(new Investment("Investment 1", 1.05, 0));
-        p.run(10, 500);
+        assertEquals("Loan 1, Loan 2", Utilities.getPaidOffLoanNames(topOfStack));
     }
 
     @Test

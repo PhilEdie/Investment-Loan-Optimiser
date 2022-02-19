@@ -11,7 +11,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 /**
@@ -26,26 +25,16 @@ public class AccountsTab extends JPanel {
     private final GUI gui;
 
     private JFormattedTextField nameEntry;
-    private JLabel typeLabel;
-    private JComboBox typeComboBox;
-    private JLabel minPaymentLabel;
     private JFormattedTextField minPaymentEntry;
     private JFormattedTextField balanceEntry;
-    private JLabel balanceLabel;
     private JFormattedTextField interestRateEntry;
-    private JLabel interestRateLabel;
-    private JButton addButton;
-    private JButton confirmButton;
     private JFormattedTextField nameResult;
     private JFormattedTextField minPaymentResult;
     private JFormattedTextField balanceResult;
     private JFormattedTextField interestRateResult;
-    private JScrollPane accountsScrollPane;
     private JTable accountsTable;
     private JFormattedTextField incomeEntry;
     private JFormattedTextField totalPeriodsEntry;
-    private JLabel incomeLabel;
-    private JLabel totalPeriodsLabel;
     private JFormattedTextField totalPeriodsResult;
     private JFormattedTextField incomeResult;
     private JLabel nameInvalid;
@@ -150,7 +139,7 @@ public class AccountsTab extends JPanel {
 
         // Model.Account Type Label
 
-        typeLabel = new JLabel("Account Type");
+        JLabel typeLabel = new JLabel("Account Type");
         GridBagConstraints gbc_typeLabel = new GridBagConstraints();
         gbc_typeLabel.fill = GridBagConstraints.HORIZONTAL;
         gbc_typeLabel.insets = new Insets(0, 0, 5, 5);
@@ -161,7 +150,7 @@ public class AccountsTab extends JPanel {
         // Type Combo box
 
         String[] comboBoxEntries = {"Investment", "Loan"};
-        typeComboBox = new JComboBox(comboBoxEntries);
+        JComboBox typeComboBox = new JComboBox(comboBoxEntries);
         GridBagConstraints gbc_typeComboBox = new GridBagConstraints();
         gbc_typeComboBox.fill = GridBagConstraints.HORIZONTAL;
         gbc_typeComboBox.gridwidth = 2;
@@ -176,7 +165,7 @@ public class AccountsTab extends JPanel {
 
         // Min Payment Label
 
-        minPaymentLabel = new JLabel("Minimum Annual Payment (If Loan)");
+        JLabel minPaymentLabel = new JLabel("Minimum Annual Payment (If Loan)");
         GridBagConstraints gbc_minPaymentLabel = new GridBagConstraints();
         gbc_minPaymentLabel.fill = GridBagConstraints.HORIZONTAL;
         gbc_minPaymentLabel.insets = new Insets(0, 0, 5, 5);
@@ -242,7 +231,7 @@ public class AccountsTab extends JPanel {
 
         // Label
 
-        balanceLabel = new JLabel("Balance");
+        JLabel balanceLabel = new JLabel("Balance");
         GridBagConstraints gbc_balanceLabel = new GridBagConstraints();
         gbc_balanceLabel.fill = GridBagConstraints.HORIZONTAL;
         gbc_balanceLabel.insets = new Insets(0, 0, 5, 5);
@@ -306,7 +295,7 @@ public class AccountsTab extends JPanel {
 
         // Label
 
-        interestRateLabel = new JLabel("Annual Interest Rate (%)");
+        JLabel interestRateLabel = new JLabel("Annual Interest Rate (%)");
         GridBagConstraints gbc_interestRateLabel = new GridBagConstraints();
         gbc_interestRateLabel.fill = GridBagConstraints.HORIZONTAL;
         gbc_interestRateLabel.insets = new Insets(0, 0, 5, 5);
@@ -364,22 +353,20 @@ public class AccountsTab extends JPanel {
         this.add(interestRateInvalid, gbc_interestRateInvalid);
         interestRateInvalid.setBackground(Color.RED);
 
-        addButton = new JButton("Add");
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (gui.accountController.containsAccountWithName(gui.form.getName())) {
-                    addInvalid.setText("Account with name \"" + gui.form.getName() + "\" already exists.");
-                } else if (!gui.form.validateEntriesBeforeAdd()) {
-                    addInvalid.setText("Please complete all fields.");
-                    showBlankFields();
-                } else {
-                    gui.accountController.getAccountsModel().addStartingAccount(createAccountFromForm());
-                    resetEntryFields();
-                    update();
-                }
-
-
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(e -> {
+            if (gui.accountController.containsAccountWithName(gui.form.getName())) {
+                addInvalid.setText("Account with name \"" + gui.form.getName() + "\" already exists.");
+            } else if (!gui.form.validateEntriesBeforeAdd()) {
+                addInvalid.setText("Please complete all fields.");
+                showBlankFields();
+            } else {
+                gui.accountController.getAccountsModel().addStartingAccount(createAccountFromForm());
+                resetEntryFields();
+                update();
             }
+
+
         });
         GridBagConstraints gbc_addButton = new GridBagConstraints();
         gbc_addButton.fill = GridBagConstraints.HORIZONTAL;
@@ -397,7 +384,7 @@ public class AccountsTab extends JPanel {
         gbc_addInvalid.gridy = 11;
         add(addInvalid, gbc_addInvalid);
 
-        incomeLabel = new JLabel("Income For Period");
+        JLabel incomeLabel = new JLabel("Income For Period");
         GridBagConstraints gbc_incomeLabel = new GridBagConstraints();
         gbc_incomeLabel.fill = GridBagConstraints.HORIZONTAL;
         gbc_incomeLabel.insets = new Insets(0, 0, 5, 5);
@@ -433,7 +420,7 @@ public class AccountsTab extends JPanel {
         this.add(incomeInvalid, gbc_incomeInvalid);
         incomeInvalid.setBackground(Color.RED);
 
-        totalPeriodsLabel = new JLabel("Total Periods");
+        JLabel totalPeriodsLabel = new JLabel("Total Periods");
         GridBagConstraints gbc_totalPeriodsLabel = new GridBagConstraints();
         gbc_totalPeriodsLabel.fill = GridBagConstraints.HORIZONTAL;
         gbc_totalPeriodsLabel.insets = new Insets(0, 0, 5, 5);
@@ -472,25 +459,23 @@ public class AccountsTab extends JPanel {
         // CONFIRM BUTTON
         // =====================================================================
 
-        confirmButton = new JButton("Confirm");
-        confirmButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (gui.accountController.getAccountsModel().getStartingAccounts().size() == 0) {
-                    confirmInvalid.setText("Please enter at least one account.");
-                    return;
-                } else if (!gui.form.validateEntriesBeforeConfirm()) {
-                    confirmInvalid.setText("Please complete all fields.");
-                    return;
-                } else if (gui.form.getIncomeValue() < gui.accountController.getTotalMinimumPayments()) {
-                    confirmInvalid.setText("Insufficient income to cover minimum payments of "
-                            + Utilities.convertToDollarFormat(gui.accountController.getTotalMinimumPayments()));
-                    return;
-                }
-                confirmInvalid.setText("");
-                gui.accountController.run(gui.form.getTotalPeriods(), gui.form.getIncomeValue());
-                gui.tabbedPane.setSelectedIndex(1);
-                gui.resultsTab.update();
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(e -> {
+            if (gui.accountController.getAccountsModel().getStartingAccounts().size() == 0) {
+                confirmInvalid.setText("Please enter at least one account.");
+                return;
+            } else if (!gui.form.validateEntriesBeforeConfirm()) {
+                confirmInvalid.setText("Please complete all fields.");
+                return;
+            } else if (gui.form.getIncomeValue() < gui.accountController.getTotalMinimumPayments()) {
+                confirmInvalid.setText("Insufficient income to cover minimum payments of "
+                        + Utilities.convertToDollarFormat(gui.accountController.getTotalMinimumPayments()));
+                return;
             }
+            confirmInvalid.setText("");
+            gui.accountController.run(gui.form.getTotalPeriods(), gui.form.getIncomeValue());
+            gui.tabbedPane.setSelectedIndex(1);
+            gui.resultsTab.update();
         });
         GridBagConstraints gbc_confirmButton = new GridBagConstraints();
         gbc_confirmButton.fill = GridBagConstraints.HORIZONTAL;
@@ -512,7 +497,7 @@ public class AccountsTab extends JPanel {
         // TABLE
         // =====================================================================
 
-        accountsScrollPane = new JScrollPane();
+        JScrollPane accountsScrollPane = new JScrollPane();
         GridBagConstraints gbc_accountsScrollPane = new GridBagConstraints();
         gbc_accountsScrollPane.fill = GridBagConstraints.BOTH;
         gbc_accountsScrollPane.gridwidth = 3;
@@ -591,33 +576,29 @@ public class AccountsTab extends JPanel {
             }
         });
 
-        typeComboBox.addActionListener(new ActionListener() {
+        typeComboBox.addActionListener(event -> {
+            JComboBox<String> combo = (JComboBox<String>) event.getSource();
+            String selectedBook = (String) combo.getSelectedItem();
 
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                JComboBox<String> combo = (JComboBox<String>) event.getSource();
-                String selectedBook = (String) combo.getSelectedItem();
-
-                if (selectedBook.equals("Loan")) {
-                    minPaymentEntry.setEnabled(true);
-                    gui.form.setType(Loan.class);
-                    gui.form.setMinimumPayment(minPaymentEntry.getText());
-                    gui.form.setBalance(balanceEntry.getText());
-                    if (nameEntry.getText().isBlank() || Utilities.isDefaultName(nameEntry.getText())) {
-                        nameEntry.setText(gui.accountController.getDefaultAccountName(Loan.class));
-                    }
-
-                    update();
-                } else {
-                    minPaymentEntry.setEnabled(false);
-                    gui.form.setType(Investment.class);
-                    gui.form.setMinimumPayment("0");
-                    gui.form.setBalance(balanceEntry.getText());
-                    if (nameEntry.getText().isBlank() || Utilities.isDefaultName(nameEntry.getText())) {
-                        nameEntry.setText(gui.accountController.getDefaultAccountName(Investment.class));
-                    }
-                    update();
+            if (selectedBook.equals("Loan")) {
+                minPaymentEntry.setEnabled(true);
+                gui.form.setType(Loan.class);
+                gui.form.setMinimumPayment(minPaymentEntry.getText());
+                gui.form.setBalance(balanceEntry.getText());
+                if (nameEntry.getText().isBlank() || Utilities.isDefaultName(nameEntry.getText())) {
+                    nameEntry.setText(gui.accountController.getDefaultAccountName(Loan.class));
                 }
+
+                update();
+            } else {
+                minPaymentEntry.setEnabled(false);
+                gui.form.setType(Investment.class);
+                gui.form.setMinimumPayment("0");
+                gui.form.setBalance(balanceEntry.getText());
+                if (nameEntry.getText().isBlank() || Utilities.isDefaultName(nameEntry.getText())) {
+                    nameEntry.setText(gui.accountController.getDefaultAccountName(Investment.class));
+                }
+                update();
             }
         });
 

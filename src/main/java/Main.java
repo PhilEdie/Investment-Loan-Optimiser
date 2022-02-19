@@ -9,16 +9,14 @@ public class Main {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    UIManager.setLookAndFeel(new FlatIntelliJLaf());
-                    GUI window = new GUI();
-                    window.frmLoanInvestment.setVisible(true);
+        EventQueue.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(new FlatIntelliJLaf());
+                GUI window = new GUI();
+                window.frmLoanInvestment.setVisible(true);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
