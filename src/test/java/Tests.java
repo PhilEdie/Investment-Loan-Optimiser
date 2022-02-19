@@ -1,4 +1,5 @@
 import Controller.AccountController;
+import Controller.AccountForm;
 import Controller.Utilities;
 import Model.Account;
 import Model.AccountsModel;
@@ -140,5 +141,31 @@ class Tests {
         assertFalse(Utilities.isDefaultName("investment1"));
         assertFalse(Utilities.isDefaultName("loan10"));
         assertFalse(Utilities.isDefaultName("investment10"));
+    }
+
+    @Test
+    void testInputBoundaries1() {
+        AccountForm f = new AccountForm();
+        f.setBalance("1000000000000");
+        f.setInterestRate("1000");
+        f.setIncome("1000000000000");
+        f.setTotalPeriods("2000");
+        assertEquals(0.0, f.getBalanceValue());
+        assertEquals(1.0, f.getInterestRateValue());
+        assertEquals(0.0, f.getIncomeValue());
+        assertEquals(1, f.getTotalPeriods());
+    }
+
+    @Test
+    void testInputBoundaries2() {
+        AccountForm f = new AccountForm();
+        f.setBalance("-100000000000000000000");
+        f.setInterestRate("-150");
+        f.setIncome("-1000");
+        f.setTotalPeriods("0");
+        assertEquals(0.0, f.getBalanceValue());
+        assertEquals(1.0, f.getInterestRateValue());
+        assertEquals(0.0, f.getIncomeValue());
+        assertEquals(1, f.getTotalPeriods());
     }
 }

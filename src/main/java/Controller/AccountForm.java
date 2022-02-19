@@ -134,11 +134,11 @@ public class AccountForm {
      * @param balance The contents of the balanceEntry text field.
      */
     public void setBalance(String balance) {
-        if (type.equals(Investment.class) && Utilities.validatePositiveNumber(balance)) {
+        if (type.equals(Investment.class) && Utilities.validatePositiveNumber(balance, 100000000000.0)) {
             this.formattedBalance = Utilities.convertToDollarFormat(balance);
             this.balanceValue = Double.parseDouble(balance);
             this.validBalance = true;
-        } else if (type.equals(Loan.class) && Utilities.validateNumber(balance)) {
+        } else if (type.equals(Loan.class) && Utilities.validateNumber(balance, 100000000000.0)) {
             this.balanceValue = Math.abs(Double.parseDouble(balance));
             this.balanceValue *= -1;
             this.formattedBalance = Utilities.convertToDollarFormat("" + balanceValue);
@@ -160,7 +160,7 @@ public class AccountForm {
      * @param interestRate The contents of the interestRateEntry text field.
      */
     public void setInterestRate(String interestRate) {
-        if (Utilities.validatePositiveNumber(interestRate)) {
+        if (Utilities.validatePositiveNumber(interestRate, 100)) {
             this.formattedInterestRate = Utilities.convertToPercentageFormat(interestRate);
             this.interestRateValue = 1 + (Double.parseDouble(interestRate) / 100);
             this.validInterestRate = true;
@@ -180,7 +180,7 @@ public class AccountForm {
      * @param minimumPayment the contents of the minimumPaymentEntry text field.
      */
     public void setMinimumPayment(String minimumPayment) {
-        if (Utilities.validatePositiveNumber(minimumPayment)) {
+        if (Utilities.validatePositiveNumber(minimumPayment, 1000000.0)) {
             this.formattedMinimumPayment = Utilities.convertToDollarFormat(minimumPayment);
             this.minimumPaymentValue = Double.parseDouble(minimumPayment);
             this.validMinimumPayment = true;
@@ -200,7 +200,7 @@ public class AccountForm {
      * @param income the contents of the incomeEntry text field.
      */
     public void setIncome(String income) {
-        if (Utilities.validatePositiveNumber(income)) {
+        if (Utilities.validatePositiveNumber(income, 100000000000.0)) {
             this.formattedAvailableFunds = Utilities.convertToDollarFormat(income);
             this.availableFundsValue = Double.parseDouble(income);
             this.validAvailableFunds = true;
@@ -221,8 +221,7 @@ public class AccountForm {
      * @param periods the contents of the totalPeriodsEntry text field.
      */
     public void setTotalPeriods(String periods) {
-        System.out.println("Periods: " + periods);
-        if (Utilities.validatePositiveNumber(periods) && Integer.parseInt(periods) != 0) {
+        if (Utilities.validatePositiveNumber(periods, 1500)) {
             this.totalPeriods = Integer.parseInt(periods);
             this.validTotalPeriods = true;
         } else {

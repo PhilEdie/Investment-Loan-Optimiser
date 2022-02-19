@@ -211,11 +211,15 @@ public class Utilities {
      * Checks to see if the provided String contains a double.
      *
      * @param text The string to check.
+     * @param max The maximum number allowed. Is checked in both directions. eg: -max, +max
      * @return True if the provided String contains a double.
      */
-    public static boolean validateNumber(String text) {
+    public static boolean validateNumber(String text, double max) {
         try {
             double testNumber = Double.parseDouble(text);
+            if (testNumber < -max || testNumber > max) {
+                return false;
+            }
         } catch (NumberFormatException e) {
             return false;
         }
@@ -226,12 +230,13 @@ public class Utilities {
      * Checks to see if the provided String contains a positive double.
      *
      * @param text The string to check.
+     * @param max The maximum number allowed.
      * @return True if the provided String contains a positive double.
      */
-    public static boolean validatePositiveNumber(String text) {
+    public static boolean validatePositiveNumber(String text, double max) {
         try {
             double testNumber = Double.parseDouble(text);
-            if (testNumber < 0) {
+            if (testNumber <= 0 || testNumber > max) {
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -239,5 +244,4 @@ public class Utilities {
         }
         return true;
     }
-
 }

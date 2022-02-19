@@ -654,7 +654,10 @@ public class AccountsTab extends JPanel {
         interestRateInvalid.setText("");
         balanceInvalid.setText("");
         addInvalid.setText("");
+        incomeInvalid.setText("");
+        totalPeriodsInvalid.setText("");
         confirmInvalid.setText("");
+
     }
 
 
