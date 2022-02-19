@@ -221,10 +221,14 @@ public class AccountForm {
      * @param periods the contents of the totalPeriodsEntry text field.
      */
     public void setTotalPeriods(String periods) {
-        if (Utilities.validatePositiveNumber(periods, 1500)) {
-            this.totalPeriods = Integer.parseInt(periods);
-            this.validTotalPeriods = true;
-        } else {
+        try {
+            if (Utilities.validatePositiveNumber(periods, 1500)) {
+                this.totalPeriods = Integer.parseInt(periods);
+                this.validTotalPeriods = true;
+            } else {
+                throw new NumberFormatException();
+            }
+        } catch(NumberFormatException e){
             this.totalPeriods = 1;
             this.validTotalPeriods = false;
         }

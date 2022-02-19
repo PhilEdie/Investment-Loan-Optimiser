@@ -91,7 +91,6 @@ class Tests {
 
     @Test
     void accumulatingInterest() {
-
         AccountController p = new AccountController();
         p.getAccountsModel().addStartingAccount(new Loan("Loan 1", 1.05, -1000, 100));
         p.run(1, 100);
@@ -135,8 +134,8 @@ class Tests {
         assertTrue(Utilities.isDefaultName("Investment1"));
         assertTrue(Utilities.isDefaultName("Loan10"));
         assertTrue(Utilities.isDefaultName("Investment10"));
-        assertFalse(Utilities.isDefaultName("Model.Loan"));
-        assertFalse(Utilities.isDefaultName("Model.Investment"));
+        assertFalse(Utilities.isDefaultName("Loan"));
+        assertFalse(Utilities.isDefaultName("Investment"));
         assertFalse(Utilities.isDefaultName("loan1"));
         assertFalse(Utilities.isDefaultName("investment1"));
         assertFalse(Utilities.isDefaultName("loan10"));
@@ -144,28 +143,109 @@ class Tests {
     }
 
     @Test
-    void testInputBoundaries1() {
+    void testInvalidInputs1() {
         AccountForm f = new AccountForm();
         f.setBalance("1000000000000");
+        f.setMinimumPayment("1000000000000");
         f.setInterestRate("1000");
         f.setIncome("1000000000000");
         f.setTotalPeriods("2000");
         assertEquals(0.0, f.getBalanceValue());
+        assertEquals(0.0, f.getMinimumPaymentValue());
         assertEquals(1.0, f.getInterestRateValue());
         assertEquals(0.0, f.getIncomeValue());
         assertEquals(1, f.getTotalPeriods());
     }
 
     @Test
-    void testInputBoundaries2() {
+    void testInvalidInputs2Investment() {
         AccountForm f = new AccountForm();
-        f.setBalance("-100000000000000000000");
-        f.setInterestRate("-150");
-        f.setIncome("-1000");
-        f.setTotalPeriods("0");
+        f.setBalance("-1");
+        f.setMinimumPayment("-1");
+        f.setInterestRate("-1");
+        f.setIncome("-1");
+        f.setTotalPeriods("-1");
         assertEquals(0.0, f.getBalanceValue());
+        assertEquals(0.0, f.getMinimumPaymentValue());
         assertEquals(1.0, f.getInterestRateValue());
         assertEquals(0.0, f.getIncomeValue());
+        assertEquals(1, f.getTotalPeriods());
+    }
+
+    @Test
+    void testInvalidInputs2Loan() {
+        AccountForm f = new AccountForm();
+        f.setType(Loan.class);
+        f.setBalance("-1");
+        f.setMinimumPayment("-1");
+        f.setInterestRate("-1");
+        f.setIncome("-1");
+        f.setTotalPeriods("-1");
+        assertEquals(-1.0, f.getBalanceValue());
+        assertEquals(0.0, f.getMinimumPaymentValue());
+        assertEquals(1.0, f.getInterestRateValue());
+        assertEquals(0.0, f.getIncomeValue());
+        assertEquals(1, f.getTotalPeriods());
+    }
+
+    @Test
+    void testInvalidInputs3() {
+        AccountForm f = new AccountForm();
+        f.setBalance("0");
+        f.setMinimumPayment("0");
+        f.setInterestRate("0");
+        f.setIncome("0");
+        f.setTotalPeriods("0");
+        assertEquals(0.0, f.getBalanceValue());
+        assertEquals(0.0, f.getMinimumPaymentValue());
+        assertEquals(1.0, f.getInterestRateValue());
+        assertEquals(0.0, f.getIncomeValue());
+        assertEquals(1, f.getTotalPeriods());
+    }
+
+    @Test
+    void testInvalidInputs4() {
+        AccountForm f = new AccountForm();
+        f.setBalance("number");
+        f.setMinimumPayment("number");
+        f.setInterestRate("number");
+        f.setIncome("number");
+        f.setTotalPeriods("number");
+        assertEquals(0.0, f.getBalanceValue());
+        assertEquals(0.0, f.getMinimumPaymentValue());
+        assertEquals(1.0, f.getInterestRateValue());
+        assertEquals(0.0, f.getIncomeValue());
+        assertEquals(1, f.getTotalPeriods());
+    }
+
+    @Test
+    void testInvalidInputs5() {
+        AccountForm f = new AccountForm();
+        f.setBalance("1.5");
+        f.setMinimumPayment("1.5");
+        f.setInterestRate("1.5");
+        f.setIncome("1.5");
+        f.setTotalPeriods("1.5");
+        assertEquals(1.5, f.getBalanceValue());
+        assertEquals(1.5, f.getMinimumPaymentValue());
+        assertEquals(1.015, f.getInterestRateValue());
+        assertEquals(1.5, f.getIncomeValue());
+        assertEquals(1, f.getTotalPeriods());
+    }
+
+    @Test
+    void testInvalidInputs6() {
+        AccountForm f = new AccountForm();
+        f.setType(Loan.class);  // Should be made a negative number.
+        f.setBalance("1.5");
+        f.setMinimumPayment("1.5");
+        f.setInterestRate("1.5");
+        f.setIncome("1.5");
+        f.setTotalPeriods("1.5");
+        assertEquals(-1.5, f.getBalanceValue());
+        assertEquals(1.5, f.getMinimumPaymentValue());
+        assertEquals(1.015, f.getInterestRateValue());
+        assertEquals(1.5, f.getIncomeValue());
         assertEquals(1, f.getTotalPeriods());
     }
 }
